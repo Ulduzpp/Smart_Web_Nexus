@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Prediction Result</h2>
+    <p><strong>Input:</strong> {{ input_data }}</p>
+    <p><strong>Prediction:</strong> {{ prediction }}</p>
+    <a href="/input" class="btn btn-secondary">Try Again</a>
+{% endblock %}
