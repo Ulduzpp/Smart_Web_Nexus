@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block navbar %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/profile">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/input_data">Prediction</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/logout">Logout</a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header">Users</div>
+        <div class="card-body">
+          <p>Total Users: 150</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header">Predictions</div>
+        <div class="card-body">
+          <p>Total Predictions: 75</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header">Reports</div>
+        <div class="card-body">
+          <p>Total Reports: 30</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header">Other Metrics</div>
+        <div class="card-body">
+          <p>Metrics: Data</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
