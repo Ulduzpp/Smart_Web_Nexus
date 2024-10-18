@@ -5,15 +5,11 @@ import numpy as np
 # 2. To Viusalize the data
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from matplotlib.colors import ListedColormap
 from scipy.stats import boxcox
 
 # 3. To preprocess the data
-from sklearn.feature_selection import SelectKBest, f_classif
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.preprocessing import StandardScaler
 # 4. Machine Learning
 from sklearn.model_selection import train_test_split,GridSearchCV, cross_val_score
 # 5. For Classification task.
