@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 from scipy.stats import boxcox
 
 # 3. To preprocess the data
+from sklearn.preprocessing import StandardScaler
 # 4. Machine Learning
 from sklearn.model_selection import train_test_split,GridSearchCV, cross_val_score
 # 5. For Classification task.
