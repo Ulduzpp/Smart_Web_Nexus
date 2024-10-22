@@ -28,16 +28,7 @@ class Prediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     # Store each feature input separately
-    mean_radius = db.Column(db.Float, nullable=False)
-    mean_perimeter = db.Column(db.Float, nullable=False)
-    mean_area = db.Column(db.Float, nullable=False)
-    mean_concavity = db.Column(db.Float, nullable=False)
-    mean_concave_points = db.Column(db.Float, nullable=False)
-    worst_radius = db.Column(db.Float, nullable=False)
-    worst_perimeter = db.Column(db.Float, nullable=False)
-    worst_area = db.Column(db.Float, nullable=False)
-    worst_concavity = db.Column(db.Float, nullable=False)
-    worst_concave_points = db.Column(db.Float, nullable=False)
+    
     
     # Store the result 
     result = db.Column(db.String(50), nullable=False)
