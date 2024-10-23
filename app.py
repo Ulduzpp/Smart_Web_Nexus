@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Configuring the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Heart_Disease.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///heart_diagnosis.db'
+
 
 
 # Initialize the database
@@ -174,8 +174,8 @@ def result():
 def profile():
     # Fetch the predictions made by the current user
     predictions = Prediction.query.filter_by(user_id=current_user.id).order_by(Prediction.date_created.desc()).all()
-    # Pass the predictions to the history template
-    return render_template('history.html', predictions=predictions)
+    # Pass the predictions to the profile template
+    return render_template('profile.html', predictions=predictions)
 
 
 @app.errorhandler(403)
