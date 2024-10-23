@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Configuring app
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Configuring the database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///heart.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Heart_Disease.db'
 
 # Initialize the database
 db = SQLAlchemy(app)
