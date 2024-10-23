@@ -44,6 +44,7 @@ def home():
     return render_template('home.html')
 
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -75,6 +76,10 @@ def login():
         else:
              flash('You must register!','danger') 
     return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/logout')
 def logout():
