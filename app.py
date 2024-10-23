@@ -1,10 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_required, UserMixin, current_user
+from flask_login import LoginManager, login_required, UserMixin, current_user, login_user
 import secrets
-from model import predict_price
-  
+from model import predict_disease
 
 app = Flask(__name__)
 
@@ -13,19 +12,31 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Configuring the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Heart_Disease.db'
 
-
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 # Initialize the database
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
+# User loader for login management
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))  # Ensure user_id is converted to int
 
 # Define User Model for user tracking
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(150),nullable=False,unique=True)
-    password = db.Column(db.String(150),nullable=False)
-    predictions = db.relationship('Prediction', backref='user', lazy=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), nullable=False, unique=True)
+    password = db.Column(db.String(150), nullable=False)
+    
+    # You can add additional fields for account status if needed
+    is_active = db.Column(db.Boolean, default=True)  # Active user status
+    is_authenticated = db.Column(db.Boolean, default=False)  # Authentication status
+
+    # Override the get_id method to return the user ID as a string
+    def get_id(self):
+        return str(self.id)
 
 # Define Prediction Model for storing inputs and results
 class Prediction(db.Model):
@@ -59,25 +70,21 @@ class Prediction(db.Model):
 def home():
     return render_template('home.html')
 
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_pass = bcrypt.generate_password_hash(password).decode('utf_8')
+        hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        new_user = User(username = username,password = hashed_pass)
+        new_user = User(username=username, password=hashed_pass)
         db.session.add(new_user)
         db.session.commit()
 
-        flash('Registeration was successful, please log in.','success')
+        flash('Registration was successful, please log in.', 'success')
         return redirect(url_for('login'))
     
-
     return render_template('register.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  
@@ -85,12 +92,15 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password,password):
-            session['username'] = user.username
-            flash('Log in succesful!','success')
+        if user and bcrypt.check_password_hash(user.password, password):
+            # Set user as authenticated
+            user.is_authenticated = True
+            db.session.commit()
+            login_user(user)  # Use Flask-Login's login_user function
+            flash('Log in successful!', 'success')
             return redirect(url_for('input_data'))
         else:
-             flash('You must register!','danger') 
+            flash('Invalid username or password!', 'danger') 
     return render_template('login.html')
 
 @app.route('/dashboard')
@@ -99,12 +109,13 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/logout')
+@login_required
 def logout():
-    session.pop('username')
-    flash('You have been logged out!','info')
+    logout_user()  # Use Flask-Login's logout_user function
+    flash('You have been logged out!', 'info')
     return redirect(url_for('login'))
 
-@app.route('/input' , methods=['GET', 'POST'])
+@app.route('/input', methods=['GET', 'POST'])
 @login_required
 def input_data():
     if request.method == 'POST':
@@ -123,16 +134,13 @@ def input_data():
             STSlope = request.form['STSlope']
             nMajorVessels = request.form['nMajorVessels']
             Thalium = request.form['Thalium']
-            
-            
 
             # Make a prediction using the predict function
             features = [
-                Age, Sex, ChestPain, RestingBloodPressure, Cholesterol, FastingBloodSugar, RestingECG
-                ,MaxHeartRate, ExcerciseAngina, OldPeak, STSlope, nMajorVessels,Thalium
+                Age, Sex, ChestPain, RestingBloodPressure, Cholesterol, FastingBloodSugar, RestingECG,
+                MaxHeartRate, ExcerciseAngina, OldPeak, STSlope, nMajorVessels, Thalium
             ]
-            result = predict_price(features)
-
+            result = predict_disease(features)
 
             # Store the inputs and prediction result in the database
             prediction = Prediction(
@@ -178,29 +186,21 @@ def profile():
     # Pass the predictions to the profile template
     return render_template('profile.html', predictions=predictions)
 
-
 @app.errorhandler(403)
 def forbidden(error):
-    return render_template('error_403.html')
-
+    return render_template('error_403.html'), 403
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('error_404.html')
-
+    return render_template('error_404.html'), 404
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('error_500.html')
-
+    return render_template('error_500.html'), 500
 
 if __name__ == '__main__':
-    
     # Create tables if they don't exist
     with app.app_context():
         db.create_all()
         
     app.run(debug=True)
-
- 
-    
