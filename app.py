@@ -119,13 +119,13 @@ def result():
     result = request.args.get('result')  # Get result from query parameter
     return render_template('result.html')
 
-@app.route('/history')
+@app.route('/profile')
 @login_required
-def history():
+def profile():
     # Fetch the predictions made by the current user
     predictions = Prediction.query.filter_by(user_id=current_user.id).order_by(Prediction.date_created.desc()).all()
-    # Pass the predictions to the history template
-    return render_template('history.html', predictions=predictions)
+    # Pass the predictions to the profile template
+    return render_template('profile.html', predictions=predictions)
 
 if __name__ == '__main__':
     
