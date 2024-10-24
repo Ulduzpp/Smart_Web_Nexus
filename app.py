@@ -98,15 +98,22 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password, password):
-            # Set user as authenticated
-            user.is_authenticated = True
-            db.session.commit()
-            login_user(user)  # Use Flask-Login's login_user function
-            flash('Log in successful!', 'success')
-            return redirect(url_for('input_data'))
+
+        if user:
+            # Check if the password matches the hashed password in the database
+            if bcrypt.check_password_hash(user.password, password):
+                # Set user as authenticated
+                user.is_authenticated = True
+                db.session.commit()
+                login_user(user)  # Use Flask-Login's login_user function
+                flash('Log in successful!', 'success')
+                return redirect(url_for('input_data'))
+            else:
+                flash('Invalid username or password!', 'danger')
         else:
-            flash('Invalid username or password!', 'danger') 
+            flash('Username not found! Please register first.', 'warning')
+            return redirect(url_for('register'))
+
     return render_template('login.html')
 
 @app.route('/dashboard')
