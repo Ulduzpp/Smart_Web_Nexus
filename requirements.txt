@@ -1,3 +1,9 @@
 flask
 Flask-Login
 flask-wtf
+bcrypt
+cryptography
+Flask-Bcrypt
+flask-sqlalchemy
+SQLAlchemy
+werkzeug
