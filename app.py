@@ -112,12 +112,15 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    if not current_user.is_authenticated:
+        flash('You need to log in to access the dashboard.', 'warning')
+        return redirect(url_for('login'))  # Redirect to the login page
     return render_template('dashboard.html')
 
 @app.route('/logout')
 @login_required
 def logout():
-    # logout_user()  # Use Flask-Login's logout_user function
+    logout_user()  # Use Flask-Login's logout_user function
     flash('You have been logged out!', 'info')
     return redirect(url_for('login'))
 
@@ -126,57 +129,74 @@ def logout():
 def input_data():
     form = InputForm()  # Create an instance of the form
     if request.method == 'POST':
-      if form.validate_on_submit():  # Check if the form is submitted and valid
-        try:
-            # Retrieve and store individual feature inputs
-            Age = form.age.data
-            Sex = form.sex.data
-            ChestPain = form.ChestPain.data
-            RestingBloodPressure = form.RestingBloodPressure.data
-            Cholesterol = form.Cholesterol.data
-            FastingBloodSugar = form.FastingBloodSugar.data
-            RestingECG = form.RestingECG.data
-            MaxHeartRate = form.MaxHeartRate.data
-            ExcerciseAngina = form.ExcerciseAngina.data
-            OldPeak = form.OldPeak.data
-            STSlope = form.STSlope.data
-            nMajorVessels = form.nMajorVessels.data
-            Thalium = form.Thalium.data
+        if form.validate_on_submit():  # Check if the form is submitted and valid
+            try:
+                # Retrieve and store individual feature inputs
+                Age = form.age.data
+                Sex = form.sex.data
+                ChestPain = form.ChestPain.data
+                RestingBloodPressure = form.RestingBloodPressure.data
+                Cholesterol = form.Cholesterol.data
+                FastingBloodSugar = form.FastingBloodSugar.data
+                RestingECG = form.RestingECG.data
+                MaxHeartRate = form.MaxHeartRate.data
+                ExcerciseAngina = form.ExcerciseAngina.data
+                OldPeak = form.OldPeak.data
+                STSlope = form.STSlope.data
+                nMajorVessels = form.nMajorVessels.data
+                Thalium = form.Thalium.data
 
-            # Make a prediction using the predict function
-            features = [
-                Age, Sex, ChestPain, RestingBloodPressure, Cholesterol, FastingBloodSugar, RestingECG,
-                MaxHeartRate, ExcerciseAngina, OldPeak, STSlope, nMajorVessels, Thalium
-            ]
-            result = predict_disease(features)
+                # Make a prediction using the predict function
+                features = [
+                    Age, Sex, ChestPain, RestingBloodPressure, Cholesterol, FastingBloodSugar, RestingECG,
+                    MaxHeartRate, ExcerciseAngina, OldPeak, STSlope, nMajorVessels, Thalium
+                ]
+                result = predict_disease(features)
 
-            # Store the inputs and prediction result in the database
-            prediction = Prediction(
-                Age=Age,
-                Sex=Sex,
-                ChestPain=ChestPain,
-                RestingBloodPressure=RestingBloodPressure,
-                Cholesterol=Cholesterol,
-                FastingBloodSugar=FastingBloodSugar,
-                RestingECG=RestingECG,
-                MaxHeartRate=MaxHeartRate,
-                ExcerciseAngina=ExcerciseAngina,
-                OldPeak=OldPeak,
-                STSlope=STSlope,
-                nMajorVessels=nMajorVessels,
-                Thalium=Thalium,
-                result=result,
-                user_id=current_user.id  # Assuming the user is logged in
-            )
-            db.session.add(prediction)
-            db.session.commit()
+                # Store the inputs and prediction result in the database
+                prediction = Prediction(
+                    Age=Age,
+                    Sex=Sex,
+                    ChestPain=ChestPain,
+                    RestingBloodPressure=RestingBloodPressure,
+                    Cholesterol=Cholesterol,
+                    FastingBloodSugar=FastingBloodSugar,
+                    RestingECG=RestingECG,
+                    MaxHeartRate=MaxHeartRate,
+                    ExcerciseAngina=ExcerciseAngina,
+                    OldPeak=OldPeak,
+                    STSlope=STSlope,
+                    nMajorVessels=nMajorVessels,
+                    Thalium=Thalium,
+                    result=result,
+                    user_id=current_user.id  # Assuming the user is logged in
+                )
+                db.session.add(prediction)
+                db.session.commit()
 
-            # Redirect to the result page with the prediction
-            return render_template('result.html', result=result)
+                # Prepare input data to pass to the result template
+                input_data = {
+                    'age': Age,
+                    'sex': Sex,
+                    'chest_pain': ChestPain,
+                    'trestbps': RestingBloodPressure,
+                    'chol': Cholesterol,
+                    'fbs': FastingBloodSugar,
+                    'restecg': RestingECG,
+                    'thalach': MaxHeartRate,
+                    'exang': ExcerciseAngina,
+                    'oldpeak': OldPeak,
+                    'slope': STSlope,
+                    'ca': nMajorVessels,
+                    'thal': Thalium
+                }
 
-        except ValueError:
-            flash("Invalid input. Please enter numeric values.", "danger")
-            return render_template('input.html', form=form)
+                # Redirect to the result page with the prediction
+                return render_template('result.html', input_data=input_data, result=result)
+
+            except ValueError:
+                flash("Invalid input. Please enter numeric values.", "danger")
+                return render_template('input.html', form=form)
 
     return render_template('input.html', form=form)
 
@@ -193,6 +213,12 @@ def profile():
     predictions = Prediction.query.filter_by(user_id=current_user.id).order_by(Prediction.date_created.desc()).all()
     # Pass the predictions to the profile template
     return render_template('profile.html', predictions=predictions)
+
+
+
+@app.errorhandler(401)
+def invalid_creswntials(error):
+    return render_template('error_401.html'), 401
 
 @app.errorhandler(403)
 def forbidden(error):
