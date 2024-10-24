@@ -8,55 +8,51 @@ with open('heart_diagnosis_disease_model.pkl', 'rb') as f:
 
 def preprocess(features):
     features_processed = list()
-    # adding age
-    features_processed.append(features['Age'])
-    # adding sex
-    if features['Sex'] == "Female":
+    features_processed.append(features['age'])
+    if features['sex'] == "Female":
         features_processed.append(0)
-    elif features['Sex'] == "Male":
+    elif features['sex'] == "Male":
         features_processed.append(1)
-    # adding chest pain type
-    if features['Chest_Pain'] == "Typical angina":
+    if features['chest_pain'] == "Typical angina":
         features_processed.append(0)
-    elif features['Chest_Pain'] == "Atypical angina":
+    elif features['chest_pain'] == "Atypical angina":
         features_processed.append(1)
-    elif features['Chest_Pain'] == "Non-anginal pain":
+    elif features['chest_pain'] == "Non-anginal pain":
         features_processed.append(2)
-    elif features['Chest_Pain'] == "Asymptomatic":
+    elif features['chest_pain'] == "Asymptomatic":
         features_processed.append(3)
-    # adding Resting Blood Pressure
-    features_processed.append(features['Trestbps'])
-    features_processed.append(features['Chol'])
-    if features['Fbs'] == "True":
+    features_processed.append(features['resting_blood_pressure'])
+    features_processed.append(features['cholesterol'])
+    if features['fasting_blood_sugar'] == "True":
         features_processed.append(1)
-    elif features['Fbs'] == "False":
+    elif features['fasting_blood_sugar'] == "False":
         features_processed.append(0)
-    if features['Fbs'] == "Normal":
+    if features['resting_ecg'] == "Normal":
         features_processed.append(0)
-    elif features['Fbs'] == "Abnormality":
+    elif features['resting_ecg'] == "Abnormality":
         features_processed.append(1)
-    elif features['Fbs'] == "Hypertrophy":
+    elif features['resting_ecg'] == "Hypertrophy":
         features_processed.append(2)
-    features_processed.append(features['Thalach'])
-    if features['Exang'] == "No":
+    features_processed.append(features['max_heart_rate'])
+    if features['excercise_angina'] == "No":
         features_processed.append(0)
-    elif features['Exang'] == "Yes":
+    elif features['excercise_angina'] == "Yes":
         features_processed.append(1)
-    features_processed.append(features['Oldpeak'])
-    if features['Slope'] == "Upsloping":
+    features_processed.append(features['old_peak'])
+    if features['st_slope'] == "Upsloping":
         features_processed.append(0)
-    elif features['Slope'] == "Flat":
+    elif features['st_slope'] == "Flat":
         features_processed.append(1)
-    elif features['Slope'] == "Downsloping":
+    elif features['st_slope'] == "Downsloping":
         features_processed.append(2)
-    features_processed.append(features['Ca'])
-    if features['Thal'] == "Normal":
+    features_processed.append(features['n_major_vessels'])
+    if features['thalium'] == "Normal":
         features_processed.append(0)
-    elif features['Thal'] == "Fixed defect":
+    elif features['thalium'] == "Fixed defect":
         features_processed.append(1)
-    elif features['Thal'] == "Reversible defect":
+    elif features['thalium'] == "Reversible defect":
         features_processed.append(2)
-    elif features['Thal'] == "Not described":
+    elif features['thalium'] == "Not described":
         features_processed.append(3)
     print(f"Before PreProcessing:\n{features}")
     print(f"After PreProcessing:\n{features_processed}")
