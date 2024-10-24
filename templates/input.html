@@ -20,9 +20,20 @@
 
 {% block content %}
 <div class="container">
-  <h2 class="text-center mb-4">Heart Disease Prediction</h2>
+  <h2 class="text-center mb-3">Heart Disease Prediction</h2>
 
-  <div class="card p-4" style="background-color: rgba(25, 119, 249, 0.995); max-width: 1200px; margin: 0 auto;">
+  <!-- Flash message display for any form errors -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert alert-danger">
+        {% for category, message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="card p-4" style="background-color: #ADDFFF; max-width: 1200px; margin: 0 auto 50px;">
     <form action="{{ url_for('input_data') }}" method="POST">
       {{ form.hidden_tag() }}
       {{ form.csrf_token }}
@@ -32,40 +43,40 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label for="age" class="form-label">Age (18-100)</label>
-            <input type="number" class="form-control" id="age" name="age" min="18" max="100" required>
+            <input type="number" class="form-control" id="age" name="age" min="18" max="100" required value="{{ form.age.data }}">
           </div>
           <div class="mb-3">
             <label for="sex" class="form-label">Sex</label>
             <select class="form-select" id="sex" name="sex" required>
-              <option value="" disabled selected>Select your sex</option>
-              <option value="1">Male</option>
-              <option value="0">Female</option>
+              <option value="" disabled>Select your sex</option>
+              <option value="1" {{ 'selected' if form.sex.data == '1' }}>Male</option>
+              <option value="0" {{ 'selected' if form.sex.data == '0' }}>Female</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="chest_pain" class="form-label">Chest Pain Type</label>
             <select class="form-select" id="chest_pain" name="chest_pain" required>
-              <option value="" disabled selected>Select chest pain type</option>
-              <option value="0">Typical angina</option>
-              <option value="1">Atypical angina</option>
-              <option value="2">Non-anginal pain</option>
-              <option value="3">Asymptomatic</option>
+              <option value="" disabled>Select chest pain type</option>
+              <option value="0" {{ 'selected' if form.chest_pain.data == '0' }}>Typical angina</option>
+              <option value="1" {{ 'selected' if form.chest_pain.data == '1' }}>Atypical angina</option>
+              <option value="2" {{ 'selected' if form.chest_pain.data == '2' }}>Non-anginal pain</option>
+              <option value="3" {{ 'selected' if form.chest_pain.data == '3' }}>Asymptomatic</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="trestbps" class="form-label">Resting Blood Pressure (0-200 mm Hg)</label>
-            <input type="number" class="form-control" id="trestbps" name="trestbps" min="0" max="200" required>
+            <input type="number" class="form-control" id="trestbps" name="trestbps" min="0" max="200" required value="{{ form.trestbps.data }}">
           </div>
           <div class="mb-3">
             <label for="chol" class="form-label">Cholesterol (0-603)</label>
-            <input type="number" class="form-control" id="chol" name="chol" min="0" max="603" required>
+            <input type="number" class="form-control" id="chol" name="chol" min="0" max="603" required value="{{ form.chol.data }}">
           </div>
           <div class="mb-3">
             <label for="fbs" class="form-label">Fasting Blood Sugar > 120 mg/dl</label>
             <select class="form-select" id="fbs" name="fbs" required>
-              <option value="" disabled selected>Select</option>
-              <option value="1">True</option>
-              <option value="0">False</option>
+              <option value="" disabled>Select</option>
+              <option value="1" {{ 'selected' if form.fbs.data == '1' }}>True</option>
+              <option value="0" {{ 'selected' if form.fbs.data == '0' }}>False</option>
             </select>
           </div>
         </div>
@@ -75,58 +86,66 @@
           <div class="mb-3">
             <label for="restecg" class="form-label">Resting Electrocardiographic Results</label>
             <select class="form-select" id="restecg" name="restecg" required>
-              <option value="" disabled selected>Select</option>
-              <option value="0">Normal</option>
-              <option value="1">Abnormality</option>
-              <option value="2">Hypertrophy</option>
+              <option value="" disabled>Select</option>
+              <option value="0" {{ 'selected' if form.restecg.data == '0' }}>Normal</option>
+              <option value="1" {{ 'selected' if form.restecg.data == '1' }}>Abnormality</option>
+              <option value="2" {{ 'selected' if form.restecg.data == '2' }}>Hypertrophy</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="thalach" class="form-label">Max Heart Rate Achieved (60-202)</label>
-            <input type="number" class="form-control" id="thalach" name="thalach" min="60" max="202" required>
+            <input type="number" class="form-control" id="thalach" name="thalach" min="60" max="202" required value="{{ form.thalach.data }}">
           </div>
           <div class="mb-3">
             <label for="exang" class="form-label">Exercise-Induced Angina</label>
             <select class="form-select" id="exang" name="exang" required>
-              <option value="" disabled selected>Select</option>
-              <option value="0">No</option>
-              <option value="1">Yes</option>
+              <option value="" disabled>Select</option>
+              <option value="0" {{ 'selected' if form.exang.data == '0' }}>No</option>
+              <option value="1" {{ 'selected' if form.exang.data == '1' }}>Yes</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="oldpeak" class="form-label">ST Depression (-2.6 to 6.2)</label>
-            <input type="number" class="form-control" id="oldpeak" name="oldpeak" step="0.1" min="-2.6" max="6.2" required>
+            <input type="number" class="form-control" id="oldpeak" name="oldpeak" step="0.1" min="-2.6" max="6.2" required value="{{ form.oldpeak.data }}">
           </div>
           <div class="mb-3">
             <label for="slope" class="form-label">Slope of the ST Segment</label>
             <select class="form-select" id="slope" name="slope" required>
-              <option value="" disabled selected>Select</option>
-              <option value="0">Upsloping</option>
-              <option value="1">Flat</option>
-              <option value="2">Downsloping</option>
+              <option value="" disabled>Select</option>
+              <option value="0" {{ 'selected' if form.slope.data == '0' }}>Upsloping</option>
+              <option value="1" {{ 'selected' if form.slope.data == '1' }}>Flat</option>
+              <option value="2" {{ 'selected' if form.slope.data == '2' }}>Downsloping</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="ca" class="form-label">Major Vessels (0-4)</label>
-            <input type="number" class="form-control" id="ca" name="ca" min="0" max="4" required>
+            <input type="number" class="form-control" id="ca" name="ca" min="0" max="4" required value="{{ form.ca.data }}">
           </div>
+        </div>
+      </div>
+
+      <!-- Centered Thalassemia Field -->
+      <div class="row justify-content-center">
+        <div class="col-md-6">
           <div class="mb-3">
             <label for="thal" class="form-label">Thalassemia</label>
             <select class="form-select" id="thal" name="thal" required>
-              <option value="" disabled selected>Select</option>
-              <option value="0">Normal</option>
-              <option value="1">Fixed defect</option>
-              <option value="2">Reversible defect</option>
-              <option value="3">Not described</option>
+              <option value="" disabled>Select</option>
+              <option value="0" {{ 'selected' if form.thal.data == '0' }}>Normal</option>
+              <option value="1" {{ 'selected' if form.thal.data == '1' }}>Fixed defect</option>
+              <option value="2" {{ 'selected' if form.thal.data == '2' }}>Reversible defect</option>
+              <option value="3" {{ 'selected' if form.thal.data == '3' }}>Not described</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="submit" class="btn btn-outline-danger">Submit</button>
+        </div>
       </div>
     </form>
   </div>
-</div>
+</div> 
 {% endblock %}
