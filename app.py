@@ -1,11 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_required, UserMixin, current_user, login_user
+from flask_login import LoginManager, login_required, UserMixin, current_user, login_user, logout_user
 import secrets
+from form import InputForm  
 from model import predict_disease
 
 app = Flask(__name__)
+
 
 # Configuring app
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -43,7 +45,7 @@ class Prediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     # Store each feature input separately
-    Age = db.Column(db.Float, nullable=False)
+    Age = db.Column(db.Integer, nullable=False)
     Sex = db.Column(db.String, nullable=False)
     ChestPain = db.Column(db.String, nullable=False)
     RestingBloodPressure = db.Column(db.Float, nullable=False)
@@ -76,6 +78,10 @@ def register():
         username = request.form['username']
         password = request.form['password']
         hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('You have registered before!', 'danger')
+            return render_template('login.html')
 
         new_user = User(username=username, password=hashed_pass)
         db.session.add(new_user)
@@ -111,29 +117,31 @@ def dashboard():
 @app.route('/logout')
 @login_required
 def logout():
-    logout_user()  # Use Flask-Login's logout_user function
+    # logout_user()  # Use Flask-Login's logout_user function
     flash('You have been logged out!', 'info')
     return redirect(url_for('login'))
 
 @app.route('/input', methods=['GET', 'POST'])
 @login_required
 def input_data():
+    form = InputForm()  # Create an instance of the form
     if request.method == 'POST':
+      if form.validate_on_submit():  # Check if the form is submitted and valid
         try:
             # Retrieve and store individual feature inputs
-            Age = float(request.form['age'])
-            Sex = request.form['sex']
-            ChestPain = request.form['ChestPain']
-            RestingBloodPressure = float(request.form['RestingBloodPressure'])
-            Cholesterol = float(request.form['Cholesterol'])
-            FastingBloodSugar = request.form['FastingBloodSugar']
-            RestingECG = request.form['RestingECG']
-            MaxHeartRate = float(request.form['MaxHeartRate'])
-            ExcerciseAngina = request.form['ExcerciseAngina']
-            OldPeak = float(request.form['OldPeak'])
-            STSlope = request.form['STSlope']
-            nMajorVessels = request.form['nMajorVessels']
-            Thalium = request.form['Thalium']
+            Age = form.age.data
+            Sex = form.sex.data
+            ChestPain = form.ChestPain.data
+            RestingBloodPressure = form.RestingBloodPressure.data
+            Cholesterol = form.Cholesterol.data
+            FastingBloodSugar = form.FastingBloodSugar.data
+            RestingECG = form.RestingECG.data
+            MaxHeartRate = form.MaxHeartRate.data
+            ExcerciseAngina = form.ExcerciseAngina.data
+            OldPeak = form.OldPeak.data
+            STSlope = form.STSlope.data
+            nMajorVessels = form.nMajorVessels.data
+            Thalium = form.Thalium.data
 
             # Make a prediction using the predict function
             features = [
@@ -168,9 +176,9 @@ def input_data():
 
         except ValueError:
             flash("Invalid input. Please enter numeric values.", "danger")
-            return render_template('input.html')
+            return render_template('input.html', form=form)
 
-    return render_template('input.html')
+    return render_template('input.html', form=form)
 
 @app.route('/result')
 @login_required
