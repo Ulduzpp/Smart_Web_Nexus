@@ -35,7 +35,7 @@ class User(UserMixin, db.Model):
     # You can add additional fields for account status if needed
     is_active = db.Column(db.Boolean, default=True)  # Active user status
     is_authenticated = db.Column(db.Boolean, default=False)  # Authentication status
-
+    predictions = db.relationship('Prediction', backref='user', lazy=True)
     # Override the get_id method to return the user ID as a string
     def get_id(self):
         return str(self.id)
@@ -67,7 +67,7 @@ class Prediction(db.Model):
     
     # Link prediction to the user
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    user = db.relationship('User', backref='predictions')
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -112,9 +112,6 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    if not current_user.is_authenticated:
-        flash('You need to log in to access the dashboard.', 'warning')
-        return redirect(url_for('login'))  # Redirect to the login page
     return render_template('dashboard.html')
 
 @app.route('/logout')
