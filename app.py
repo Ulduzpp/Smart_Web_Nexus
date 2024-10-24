@@ -12,13 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #2_ Ensure SQLAlchemy is used to connect the Flask app to the database.
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app) 
-login_manager = LoginManager(app)  
-login_manager.login_view = 'login'  
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 #1_ Design and set up a SQLite (or other) database to store user data 
 with app.app_context():
@@ -113,4 +107,7 @@ def save_prediction():
     return jsonify({"message": "Prediction saved successfully"}), 201
 
 if __name__ == '__main__':
+    #1_ Design and set up a SQLite (or other) database to store user data 
+    with app.app_context():
+         db.create_all()
     app.run(debug=True)
