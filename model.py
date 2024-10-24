@@ -37,7 +37,7 @@ def preprocess(features):
         features_processed.append(1)
     elif features['Fbs'] == "Hypertrophy":
         features_processed.append(2)
-    features_processed.append(features[Thalach])
+    features_processed.append(features['Thalach'])
     if features['Exang'] == "No":
         features_processed.append(0)
     elif features['Exang'] == "Yes":
