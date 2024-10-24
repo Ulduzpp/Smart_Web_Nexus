@@ -1,0 +1,17 @@
+{% extends "base_error.html" %}
+{% block title %}403 Forbidden{% endblock %}
+
+{% block content %}
+<div class="bg">
+  <div class="content-center">
+    <h1 class="display-1">403</h1>
+    <h2 class="mb-4">Forbidden</h2>
+    <div class="image-container text-center mb-3">
+      <img src="{{ url_for('static', filename='images/Error_403.webp') }}" alt="Forbidden Image" class="img-fluid"
+        style="max-width: 30%; height: auto;">
+    </div>
+    <p>You don't have permission to access this page.</p>
+    <a href="/" class="btn btn-primary">Return Home</a>
+  </div>
+</div>
+{% endblock %}

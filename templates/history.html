@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History{% endblock %}
+
+{% block navbar %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/profile">User Profile</a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 text-center">
+  <h1 class="my-4">{{ username|capitalize }}'s Prediction History</h1>
+  <div class="table-responsive">
+    {% if predictions %}
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Chest Pain Type</th>
+            <th>Resting Blood Pressure</th>
+            <th>Cholesterol</th>
+            <th>Fasting Blood Sugar</th>
+            <th>Resting ECG</th>
+            <th>Max Heart Rate Achieved</th>
+            <th>Exercise-Induced Angina</th>
+            <th>ST Depression</th>
+            <th>Slope of the ST Segment</th>
+            <th>Number of Major Vessels</th>
+            <th>Thalassemia</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prediction in predictions %}
+            <tr>
+              <td>{{ prediction['date'] or 'N/A' }}</td>
+              <td>{{ prediction['age'] or 'N/A' }}</td>
+              <td>{{ 'Male' if prediction['sex'] == 1 else 'Female' }}</td>
+              <td>
+                {% if prediction['chest_pain'] is not none %}
+                  {% if prediction['chest_pain'] == 0 %} Typical angina
+                  {% elif prediction['chest_pain'] == 1 %} Atypical angina
+                  {% elif prediction['chest_pain'] == 2 %} Non-anginal pain
+                  {% else %} Asymptomatic
+                  {% endif %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>{{ prediction['trestbps'] or 'N/A' }} mm Hg</td>
+              <td>{{ prediction['chol'] or 'N/A' }} mg/dL</td>
+              <td>{{ 'Yes' if prediction['fbs'] == 1 else 'No' }}</td>
+              <td>
+                {% if prediction['restecg'] is not none %}
+                  {% if prediction['restecg'] == 0 %} Normal
+                  {% elif prediction['restecg'] == 1 %} Abnormality
+                  {% else %} Hypertrophy
+                  {% endif %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>{{ prediction['thalach'] or 'N/A' }} bpm</td>
+              <td>{{ 'Yes' if prediction['exang'] == 1 else 'No' }}</td>
+              <td>{{ prediction['oldpeak'] or 'N/A' }}</td>
+              <td>
+                {% if prediction['slope'] is not none %}
+                  {% if prediction['slope'] == 0 %} Upsloping
+                  {% elif prediction['slope'] == 1 %} Flat
+                  {% else %} Downsloping
+                  {% endif %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>{{ prediction['ca'] or 'N/A' }}</td>
+              <td>
+                {% if prediction['thal'] is not none %}
+                  {% if prediction['thal'] == 0 %} Normal
+                  {% elif prediction['thal'] == 1 %} Fixed defect
+                  {% elif prediction['thal'] == 2 %} Reversible defect
+                  {% else %} Not described
+                  {% endif %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td class="{% if prediction['result'] == 'Heart Disease' %}text-danger{% else %}text-success{% endif %}">
+                <strong>{{ prediction['result'] }}</strong>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-warning">No predictions available.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
