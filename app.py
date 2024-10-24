@@ -8,7 +8,6 @@ from model import predict_disease
 
 app = Flask(__name__)
 
-
 # Configuring app
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Configuring the database
@@ -32,10 +31,12 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
     
-    # You can add additional fields for account status if needed
-    is_active = db.Column(db.Boolean, default=True)  # Active user status
-    is_authenticated = db.Column(db.Boolean, default=False)  # Authentication status
+    # Active user status
+    is_active = db.Column(db.Boolean, default=True)
+    
+    # Relationship to Prediction
     predictions = db.relationship('Prediction', backref='user', lazy=True)
+
     # Override the get_id method to return the user ID as a string
     def get_id(self):
         return str(self.id)
@@ -45,19 +46,19 @@ class Prediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     # Store each feature input separately
-    Age = db.Column(db.Integer, nullable=False)
-    Sex = db.Column(db.String, nullable=False)
-    ChestPain = db.Column(db.String, nullable=False)
-    RestingBloodPressure = db.Column(db.Float, nullable=False)
-    Cholesterol = db.Column(db.Float, nullable=False)
-    FastingBloodSugar = db.Column(db.String, nullable=False)
-    RestingECG = db.Column(db.String, nullable=False)
-    MaxHeartRate = db.Column(db.Float, nullable=False)
-    ExcerciseAngina = db.Column(db.String, nullable=False)
-    OldPeak = db.Column(db.Float, nullable=False)
-    STSlope = db.Column(db.String, nullable=False)
-    nMajorVessels = db.Column(db.String, nullable=False)
-    Thalium = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    sex = db.Column(db.String, nullable=False)
+    chest_pain = db.Column(db.String, nullable=False)
+    resting_blood_pressure = db.Column(db.Float, nullable=False)
+    cholesterol = db.Column(db.Float, nullable=False)
+    fasting_blood_sugar = db.Column(db.String, nullable=False)
+    resting_ecg = db.Column(db.String, nullable=False)
+    max_heart_rate = db.Column(db.Float, nullable=False)
+    exercise_angina = db.Column(db.String, nullable=False)
+    old_peak = db.Column(db.Float, nullable=False)
+    st_slope = db.Column(db.String, nullable=False)
+    n_major_vessels = db.Column(db.String, nullable=False)
+    thalium = db.Column(db.String, nullable=False)
     
     # Store the result 
     result = db.Column(db.String(50), nullable=False)
@@ -67,7 +68,7 @@ class Prediction(db.Model):
     
     # Link prediction to the user
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref='predictions')
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -102,9 +103,6 @@ def login():
         if user:
             # Check if the password matches the hashed password in the database
             if bcrypt.check_password_hash(user.password, password):
-                # Set user as authenticated
-                user.is_authenticated = True
-                db.session.commit()
                 login_user(user)  # Use Flask-Login's login_user function
                 flash('Log in successful!', 'success')
                 return redirect(url_for('input_data'))
@@ -136,42 +134,42 @@ def input_data():
         if form.validate_on_submit():  # Check if the form is submitted and valid
             try:
                 # Retrieve and store individual feature inputs
-                Age = form.age.data
-                Sex = form.sex.data
-                ChestPain = form.ChestPain.data
-                RestingBloodPressure = form.RestingBloodPressure.data
-                Cholesterol = form.Cholesterol.data
-                FastingBloodSugar = form.FastingBloodSugar.data
-                RestingECG = form.RestingECG.data
-                MaxHeartRate = form.MaxHeartRate.data
-                ExcerciseAngina = form.ExcerciseAngina.data
-                OldPeak = form.OldPeak.data
-                STSlope = form.STSlope.data
-                nMajorVessels = form.nMajorVessels.data
-                Thalium = form.Thalium.data
+                age = form.age.data
+                sex = form.sex.data
+                chest_pain = form.ChestPain.data
+                resting_blood_pressure = form.RestingBloodPressure.data
+                cholesterol = form.Cholesterol.data
+                fasting_blood_sugar = form.FastingBloodSugar.data
+                resting_ecg = form.RestingECG.data
+                max_heart_rate = form.MaxHeartRate.data
+                exercise_angina = form.ExcerciseAngina.data
+                old_peak = form.OldPeak.data
+                st_slope = form.STSlope.data
+                n_major_vessels = form.nMajorVessels.data
+                thalium = form.Thalium.data
 
                 # Make a prediction using the predict function
                 features = [
-                    Age, Sex, ChestPain, RestingBloodPressure, Cholesterol, FastingBloodSugar, RestingECG,
-                    MaxHeartRate, ExcerciseAngina, OldPeak, STSlope, nMajorVessels, Thalium
+                    age, sex, chest_pain, resting_blood_pressure, cholesterol, fasting_blood_sugar, resting_ecg,
+                    max_heart_rate, exercise_angina, old_peak, st_slope, n_major_vessels, thalium
                 ]
                 result = predict_disease(features)
 
                 # Store the inputs and prediction result in the database
                 prediction = Prediction(
-                    Age=Age,
-                    Sex=Sex,
-                    ChestPain=ChestPain,
-                    RestingBloodPressure=RestingBloodPressure,
-                    Cholesterol=Cholesterol,
-                    FastingBloodSugar=FastingBloodSugar,
-                    RestingECG=RestingECG,
-                    MaxHeartRate=MaxHeartRate,
-                    ExcerciseAngina=ExcerciseAngina,
-                    OldPeak=OldPeak,
-                    STSlope=STSlope,
-                    nMajorVessels=nMajorVessels,
-                    Thalium=Thalium,
+                    age=age,
+                    sex=sex,
+                    chest_pain=chest_pain,
+                    resting_blood_pressure=resting_blood_pressure,
+                    cholesterol=cholesterol,
+                    fasting_blood_sugar=fasting_blood_sugar,
+                    resting_ecg=resting_ecg,
+                    max_heart_rate=max_heart_rate,
+                    exercise_angina=exercise_angina,
+                    old_peak=old_peak,
+                    st_slope=st_slope,
+                    n_major_vessels=n_major_vessels,
+                    thalium=thalium,
                     result=result,
                     user_id=current_user.id  # Assuming the user is logged in
                 )
@@ -180,19 +178,19 @@ def input_data():
 
                 # Prepare input data to pass to the result template
                 input_data = {
-                    'age': Age,
-                    'sex': Sex,
-                    'chest_pain': ChestPain,
-                    'trestbps': RestingBloodPressure,
-                    'chol': Cholesterol,
-                    'fbs': FastingBloodSugar,
-                    'restecg': RestingECG,
-                    'thalach': MaxHeartRate,
-                    'exang': ExcerciseAngina,
-                    'oldpeak': OldPeak,
-                    'slope': STSlope,
-                    'ca': nMajorVessels,
-                    'thal': Thalium
+                    'age': age,
+                    'sex': sex,
+                    'chest_pain': chest_pain,
+                    'trestbps': resting_blood_pressure,
+                    'chol': cholesterol,
+                    'fbs': fasting_blood_sugar,
+                    'restecg': resting_ecg,
+                    'thalach': max_heart_rate,
+                    'exang': exercise_angina,
+                    'oldpeak': old_peak,
+                    'slope': st_slope,
+                    'ca': n_major_vessels,
+                    'thal': thalium
                 }
 
                 # Redirect to the result page with the prediction
@@ -218,10 +216,8 @@ def profile():
     # Pass the predictions to the profile template
     return render_template('profile.html', predictions=predictions)
 
-
-
 @app.errorhandler(401)
-def invalid_creswntials(error):
+def invalid_credentials(error):
     return render_template('error_401.html'), 401
 
 @app.errorhandler(403)
