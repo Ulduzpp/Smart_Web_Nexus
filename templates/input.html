@@ -20,9 +20,9 @@
 
 {% block content %}
 <div class="container">
-  <h2 class="text-center mb-4">Heart Disease Prediction</h2>
+  <h2 class="text-center mb-3">Heart Disease Prediction</h2>
 
-  <div class="card p-4" style="background-color: rgba(25, 119, 249, 0.995); max-width: 1200px; margin: 0 auto;">
+  <div class="card p-4" style="background-color: #ADDFFF; max-width: 1200px; margin: 0 auto 50px;">
     <form action="{{ url_for('input_data') }}" method="POST">
       {{ form.hidden_tag() }}
       {{ form.csrf_token }}
@@ -110,6 +110,12 @@
             <label for="ca" class="form-label">Major Vessels (0-4)</label>
             <input type="number" class="form-control" id="ca" name="ca" min="0" max="4" required>
           </div>
+        </div>
+      </div>
+
+      <!-- Centered Thalassemia Field -->
+      <div class="row justify-content-center">
+        <div class="col-md-6">
           <div class="mb-3">
             <label for="thal" class="form-label">Thalassemia</label>
             <select class="form-select" id="thal" name="thal" required>
@@ -124,7 +130,9 @@
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="submit" class="btn btn-outline-danger">Submit</button>
+        </div>
       </div>
     </form>
   </div>

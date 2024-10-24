@@ -12,7 +12,7 @@ app = Flask(__name__)
 # Configuring app
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Configuring the database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Heart_Disease.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Heart_Disease_Diagnosis.db'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
