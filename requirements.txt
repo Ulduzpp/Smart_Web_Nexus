@@ -33,3 +33,6 @@ tzdata
 urllib3
 webencodings
 zipp
+flask
+Flask-Login
+flask-wtf
