@@ -60,15 +60,46 @@ class PredictionHistory(db.Model):
     thalium = db.Column(db.String, nullable=False)
     result = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    def __init__(self, user_id, age, sex, chest_pain, resting_blood_pressure, cholesterol,
+                 fasting_blood_sugar, resting_ecg, max_heart_rate, excercise_angina,
+                 old_peak, st_slope, n_major_vessels, thalium, result):
+        self.user_id = user_id
+        self.age = age
+        self.sex = sex
+        self.chest_pain = chest_pain
+        self.resting_blood_pressure = resting_blood_pressure
+        self.cholesterol = cholesterol
+        self.fasting_blood_sugar = fasting_blood_sugar
+        self.resting_ecg = resting_ecg
+        self.max_heart_rate = max_heart_rate
+        self.excercise_angina = excercise_angina
+        self.old_peak = old_peak
+        self.st_slope = st_slope
+        self.n_major_vessels = n_major_vessels
+        self.thalium = thalium
+        self.result = result
 
-    def save_prediction(features,user_id,prediction_result):
-        new_prediction = PredictionHistory(user_id,features['age'],features['sex'],
-        features['chest_pain'],features['resting_blood_pressure'],features['cholesterol'],
-        features['fasting_blood_sugar'],features['resting_ecg'],features['max_heart_rate'],
-        features['excercise_angina'],features['old_peak'],features['st_slope'],features['n_major_vessels'],
-        features['thalium'],prediction_result)
+    def save_prediction(features, user_id, prediction_result):
+        new_prediction = PredictionHistory(
+            user_id=user_id,
+            age=features['age'],
+            sex=features['sex'],
+            chest_pain=features['chest_pain'],
+            resting_blood_pressure=features['resting_blood_pressure'],
+            cholesterol=features['cholesterol'],
+            fasting_blood_sugar=features['fasting_blood_sugar'],
+            resting_ecg=features['resting_ecg'],
+            max_heart_rate=features['max_heart_rate'],
+            excercise_angina=features['excercise_angina'],
+            old_peak=features['old_peak'],
+            st_slope=features['st_slope'],
+            n_major_vessels=features['n_major_vessels'],
+            thalium=features['thalium'],
+            result=prediction_result
+        )
+    
         db.session.add(new_prediction)
-        db.session.commit()
+        db.session.commit()  # Don't forget to commit the session!
 
 @app.route('/')
 def home():
