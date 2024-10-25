@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, abort
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user,UserMixin
 import secrets
 from form import InputForm  
@@ -60,6 +60,7 @@ class PredictionHistory(db.Model):
     thalium = db.Column(db.String, nullable=False)
     result = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
     def __init__(self, user_id, age, sex, chest_pain, resting_blood_pressure, cholesterol,
                  fasting_blood_sugar, resting_ecg, max_heart_rate, excercise_angina,
                  old_peak, st_slope, n_major_vessels, thalium, result):
@@ -78,7 +79,7 @@ class PredictionHistory(db.Model):
         self.n_major_vessels = n_major_vessels
         self.thalium = thalium
         self.result = result
-
+    
     def save_prediction(features, user_id, prediction_result):
         new_prediction = PredictionHistory(
             user_id=user_id,
@@ -101,16 +102,69 @@ class PredictionHistory(db.Model):
         db.session.add(new_prediction)
         db.session.commit()  # Don't forget to commit the session!
 
+
+# login_required method
+def login_required(f):
+    def wrap(*args, **kwargs):
+        if 'username' not in session:
+            abort(401)
+        return f(*args, **kwargs)
+    wrap.__name__ = f.__name__
+    return wrap
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # User Authentication and query to database
+        user_exists = User.user_authentication(username= username)
+        if user_exists:
+                flash('Username already exists. Please choose a different one.', 'danger')
+                return redirect(url_for('register'))
+        else:
+            new_user = User(username= username, email= email, password_hash= password)
+            # hashing password
+            new_user.set_password(password= password)
+            # handeling email exist
+            if db.session.add(new_user):
+                db.session.add(new_user)
+                db.session.commit()
+                flash('Registration was successful, Please log in.', 'success')
+                return redirect(url_for('login'))
+            else:
+                abort(500)
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # User Authentication and query to database
+        user = User.user_authentication(username= username)
+        
+        if user:
+            if user.check_password(password):
+                # password is correct
+                session['username'] = user.username
+                session['email'] = user.email
+                session['user_id'] = user.id
+                flash('Log in successful!', 'success')
+                return redirect(url_for('profile'))
+            else:
+                # password is incorrect
+                flash('Incorrect password. Please try again.', 'warning')
+        else:
+            # The user does not exist
+            flash('Username not found. Please register first.', 'danger')
     return render_template('login.html')
 
 @app.route('/profile')
@@ -119,24 +173,64 @@ def profile():
     return render_template('profile.html')
 
 @app.route('/logout')
-@login_required
 def logout():
-    return redirect(url_for('login'))
+    session.pop('username')
+    flash('You have been logged out!','info')
+    return redirect(url_for('home'))
 
 @app.route('/input', methods=['GET', 'POST'])
 @login_required
 def input_data():
-    return render_template('input.html')
+    form = InputForm()
+    if form.validate_on_submit():
+        features = {
+            'age': form.age.data,
+            'sex': form.sex.data,
+            'chest_pain': form.chest_pain.data,
+            'resting_blood_pressure': form.resting_blood_pressure.data,
+            'cholesterol': form.cholesterol.data,
+            'fasting_blood_sugar': form.fasting_blood_sugar.data,
+            'resting_ecg' : form.resting_ecg.data,
+            'max_heart_rate': form.max_heart_rate.data,
+            'excercise_angina': form.excercise_angina.data,
+            'old_peak': form.old_peak.data,
+            'st_slope': form.st_slope.data,
+            'n_major_vessels': form.n_major_vessels.data,
+            'thalium': form.thalium.data
+        }
+
+        prediction = predict_disease(features)
+
+        # Save the prediction to the database
+        if 'user_id' in session:
+            PredictionHistory.save_prediction(features= features, user_id= session['user_id'], prediction_result= prediction)
+
+        # Store the result in the session
+        session['features'] = features
+        session['result'] = prediction
+
+        return redirect(url_for('result'))
+
+    return render_template('input.html', form= form)
 
 @app.route('/result')
 @login_required
 def result():
-    return render_template('result.html')
+    features = session.get('features')
+    result = session.get('result')  # Get result from query parameter
+    if result is None:
+        # Handle case where result is not provided, redirect back to input or an error page
+        flash('No result available. Please input the data first.', 'warning')
+        return redirect(url_for('input_data'))
+    return render_template('result.html', result= result, features= features)
 
 @app.route('/history')
 @login_required
 def history():
-     return render_template('history.html')
+    # Fetch the predictions made by the current user
+    predictions = PredictionHistory.query.filter_by(user_id=session['user_id']).order_by(PredictionHistory.timestamp.desc()).all()
+    # Pass the predictions to the history template
+    return render_template('history.html', predictions=predictions, username= session['username'])
 
 @app.errorhandler(401)
 def invalid_credentials(error):
@@ -152,6 +246,7 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_error(error):
+    db.session.rollback()
     return render_template('error_500.html'), 500
 
 if __name__ == '__main__':
