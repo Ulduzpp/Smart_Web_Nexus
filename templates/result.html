@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Predicted Result{% endblock %}
-
+{% block navbar %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link" href="/profile">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/logout">Logout</a>
+  </li>
+</ul>
+{% endblock %}
 {% block content %}
 <div class="container">
     <h2 class="text-center mb-4">Predicted Result</h2>
@@ -8,47 +17,25 @@
     <div class="card p-4" style="background-color: #f8d7da; max-width: 600px; margin: 0 auto;">
         <h5 class="mb-3">Your Input Data:</h5>
         <ul class="list-group mb-4">
-            <li class="list-group-item"><strong>Age:</strong> {{ input_data['age'] }}</li>
-            <li class="list-group-item"><strong>Sex:</strong> {{ 'Male' if input_data['sex'] == 1 else 'Female' }}</li>
-            <li class="list-group-item"><strong>Chest Pain Type:</strong>
-                {% if input_data['chest_pain'] == 0 %} Typical angina
-                {% elif input_data['chest_pain'] == 1 %} Atypical angina
-                {% elif input_data['chest_pain'] == 2 %} Non-anginal pain
-                {% else %} Asymptomatic
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Resting Blood Pressure:</strong> {{ input_data['trestbps'] }} mm Hg</li>
-            <li class="list-group-item"><strong>Cholesterol:</strong> {{ input_data['chol'] }} mg/dL</li>
-            <li class="list-group-item"><strong>Fasting Blood Sugar:</strong> {{ 'Yes' if input_data['fbs'] == 1 else 'No' }}</li>
-            <li class="list-group-item"><strong>Resting ECG:</strong>
-                {% if input_data['restecg'] == 0 %} Normal
-                {% elif input_data['restecg'] == 1 %} Abnormality
-                {% else %} Hypertrophy
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Maximum Heart Rate Achieved:</strong> {{ input_data['thalach'] }} bpm</li>
-            <li class="list-group-item"><strong>Exercise-Induced Angina:</strong> {{ 'Yes' if input_data['exang'] == 1 else 'No' }}</li>
-            <li class="list-group-item"><strong>ST Depression:</strong> {{ input_data['oldpeak'] }}</li>
-            <li class="list-group-item"><strong>Slope of the ST Segment:</strong>
-                {% if input_data['slope'] == 0 %} Upsloping
-                {% elif input_data['slope'] == 1 %} Flat
-                {% else %} Downsloping
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Number of Major Vessels:</strong> {{ input_data['ca'] }}</li>
-            <li class="list-group-item"><strong>Thalassemia:</strong>
-                {% if input_data['thal'] == 0 %} Normal
-                {% elif input_data['thal'] == 1 %} Fixed defect
-                {% elif input_data['thal'] == 2 %} Reversible defect
-                {% else %} Not described
-                {% endif %}
-            </li>
+            <li class="list-group-item"><strong>Age:</strong> {{ features['age'] }}</li>
+            <li class="list-group-item"><strong>Sex:</strong> {{ features['sex'] }}</li>
+            <li class="list-group-item"><strong>Chest Pain Type:</strong>{{ features['chest_pain'] }}</li>
+            <li class="list-group-item"><strong>Resting Blood Pressure:</strong> {{ features['resting_blood_pressure'] }} mm Hg</li>
+            <li class="list-group-item"><strong>Cholesterol:</strong> {{ features['cholesterol'] }} mg/dL</li>
+            <li class="list-group-item"><strong>Fasting Blood Sugar:</strong> {{ features['fasting_blood_sugar'] }}</li>
+            <li class="list-group-item"><strong>Resting ECG:</strong>{{ features['resting_ecg'] }}</li>
+            <li class="list-group-item"><strong>Maximum Heart Rate Achieved:</strong> {{ features['max_heart_rate'] }} bpm</li>
+            <li class="list-group-item"><strong>Exercise-Induced Angina:</strong> {{ features['excercise_angina'] }}</li>
+            <li class="list-group-item"><strong>ST Depression:</strong> {{ features['old_peak'] }}</li>
+            <li class="list-group-item"><strong>Slope of the ST Segment:</strong>{{ features['st_slope'] }}</li>
+            <li class="list-group-item"><strong>Number of Major Vessels:</strong> {{ features['n_major_vessels'] }}</li>
+            <li class="list-group-item"><strong>Thalassemia:</strong>{{ features['thalium'] }}</li>
         </ul>
 
         <h5 class="mb-3">Prediction:</h5>
-        <p class="lead" style="color: {% if result == 'Positive' %}red{% else %}green{% endif %};"><strong>{{ result }}</strong></p>
+        <p class="lead" style="color: {% if result == 'Heart Disease' %}red{% else %}green{% endif %};"><strong>{{ result }}</strong></p>
 
-        {% if result == 'Positive' %}
+        {% if result == 'Heart Disease' %}
         <div class="alert alert-danger">
             <strong>Explanation:</strong> A positive result indicates a higher risk of heart disease. It is recommended
             that you consult with a healthcare provider for further testing and management.

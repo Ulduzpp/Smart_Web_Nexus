@@ -4,9 +4,6 @@
 {% block navbar %}
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/">Home</a>
-  </li>
-  <li class="nav-item">
     <a class="nav-link" href="/history">History</a>
   </li>
   <li class="nav-item">
@@ -19,6 +16,22 @@
 {% endblock %}
 
 {% block content %}
+<div>
+  {% with messages = get_flashed_messages(with_categories=True) %}
+   {% if messages %}
+    <div class="mt-1">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+ {% endwith %}
+</div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3">

@@ -5,10 +5,10 @@
 {% block navbar %}
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/">Home</a>
+    <a class="nav-link" href="/profile">Profile</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="/profile">User Profile</a>
+    <a class="nav-link" href="/logout">Logout</a>
   </li>
 </ul>
 {% endblock %}
@@ -41,60 +41,22 @@
         <tbody>
           {% for prediction in predictions %}
             <tr>
-              <td>{{ prediction['date'] or 'N/A' }}</td>
-              <td>{{ prediction['age'] or 'N/A' }}</td>
-              <td>{{ 'Male' if prediction['sex'] == 1 else 'Female' }}</td>
-              <td>
-                {% if prediction['chest_pain'] is not none %}
-                  {% if prediction['chest_pain'] == 0 %} Typical angina
-                  {% elif prediction['chest_pain'] == 1 %} Atypical angina
-                  {% elif prediction['chest_pain'] == 2 %} Non-anginal pain
-                  {% else %} Asymptomatic
-                  {% endif %}
-                {% else %}
-                  N/A
-                {% endif %}
-              </td>
-              <td>{{ prediction['trestbps'] or 'N/A' }} mm Hg</td>
-              <td>{{ prediction['chol'] or 'N/A' }} mg/dL</td>
-              <td>{{ 'Yes' if prediction['fbs'] == 1 else 'No' }}</td>
-              <td>
-                {% if prediction['restecg'] is not none %}
-                  {% if prediction['restecg'] == 0 %} Normal
-                  {% elif prediction['restecg'] == 1 %} Abnormality
-                  {% else %} Hypertrophy
-                  {% endif %}
-                {% else %}
-                  N/A
-                {% endif %}
-              </td>
-              <td>{{ prediction['thalach'] or 'N/A' }} bpm</td>
-              <td>{{ 'Yes' if prediction['exang'] == 1 else 'No' }}</td>
-              <td>{{ prediction['oldpeak'] or 'N/A' }}</td>
-              <td>
-                {% if prediction['slope'] is not none %}
-                  {% if prediction['slope'] == 0 %} Upsloping
-                  {% elif prediction['slope'] == 1 %} Flat
-                  {% else %} Downsloping
-                  {% endif %}
-                {% else %}
-                  N/A
-                {% endif %}
-              </td>
-              <td>{{ prediction['ca'] or 'N/A' }}</td>
-              <td>
-                {% if prediction['thal'] is not none %}
-                  {% if prediction['thal'] == 0 %} Normal
-                  {% elif prediction['thal'] == 1 %} Fixed defect
-                  {% elif prediction['thal'] == 2 %} Reversible defect
-                  {% else %} Not described
-                  {% endif %}
-                {% else %}
-                  N/A
-                {% endif %}
-              </td>
+              <td>{{ prediction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+              <td>{{ prediction.age }}</td>
+              <td>{{ prediction.sex }}</td>
+              <td>{{ prediction.chest_pain }}</td>
+              <td>{{ prediction.resting_blood_pressure }} mm Hg</td>
+              <td>{{ prediction.cholesterol }} mg/dL</td>
+              <td>{{ prediction.fasting_blood_sugar }}</td>
+              <td>{{ prediction.resting_ecg }}</td>
+              <td>{{ prediction.max_heart_rate }} bpm</td>
+              <td>{{ prediction.excercise_angina }}</td>
+              <td>{{ prediction.old_peak }}</td>
+              <td>{{ prediction.st_slope }}</td>
+              <td>{{ prediction.n_major_vessels }}</td>
+              <td>{{ prediction.thalium }}</td>
               <td class="{% if prediction['result'] == 'Heart Disease' %}text-danger{% else %}text-success{% endif %}">
-                <strong>{{ prediction['result'] }}</strong>
+                <strong>{{ prediction.result }}</strong>
               </td>
             </tr>
           {% endfor %}

@@ -8,6 +8,22 @@
     </header>
     <main class="text-center mt-4">
         <!-- Adjust margin-bottom of heading -->
+        <div>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    <div class="mt-1">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
         <h1 class="display-4 mb-2" style="font-size: 2.5rem;">Heart Disease Prediction <br> Web Application</h1>
         <div class="image-container text-center mb-3">
             <img src="{{ url_for('static', filename='images/smart_app.webp') }}" alt="Smart Research" class="img-fluid" style="max-width: 50%; height: auto;">
