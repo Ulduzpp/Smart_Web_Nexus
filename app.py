@@ -125,21 +125,23 @@ def register():
         
         # User Authentication and query to database
         user_exists = User.user_authentication(username= username)
+        # Just for testing error_500 handling
+        email_exists = User.query.filter_by(email=email).first()
         if user_exists:
                 flash('Username already exists. Please choose a different one.', 'danger')
                 return redirect(url_for('register'))
+        elif email_exists:
+            flash('Email already registered. Please choose a different one.', 'danger')
+            abort(500)
         else:
             new_user = User(username= username, email= email, password_hash= password)
             # hashing password
             new_user.set_password(password= password)
-            # handeling email exist
-            if db.session.add(new_user):
-                db.session.add(new_user)
-                db.session.commit()
-                flash('Registration was successful, Please log in.', 'success')
-                return redirect(url_for('login'))
-            else:
-                abort(500)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Registration was successful, Please log in.', 'success')
+            return redirect(url_for('login'))
+    
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -150,13 +152,25 @@ def login():
 
         # User Authentication and query to database
         user = User.user_authentication(username= username)
-        
-        if user:
+        email_user = User.query.filter_by(email=username).first()
+        # Login with username or email
+        if user :
             if user.check_password(password):
                 # password is correct
                 session['username'] = user.username
                 session['email'] = user.email
                 session['user_id'] = user.id
+                flash('Log in successful!', 'success')
+                return redirect(url_for('profile'))
+            else:
+                # password is incorrect
+                flash('Incorrect password. Please try again.', 'warning')
+        elif email_user:
+            if email_user.check_password(password):
+                # password is correct
+                session['username'] = email_user.username
+                session['email'] = email_user.email
+                session['user_id'] = email_user.id
                 flash('Log in successful!', 'success')
                 return redirect(url_for('profile'))
             else:
@@ -246,7 +260,6 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    db.session.rollback()
     return render_template('error_500.html'), 500
 
 if __name__ == '__main__':
