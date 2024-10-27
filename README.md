@@ -115,7 +115,7 @@ Heart Disease Prediction Web Application
 ## Installation
 
 1. Clone the repository:
-git clone https://github.com/your_username/heart-disease-prediction-app.git
+git clone https://github.com/Ulduzpp/Smart_Web_Nexus.git
 
 2. Navigate to the project directory:
 cd heart-disease-prediction-app
