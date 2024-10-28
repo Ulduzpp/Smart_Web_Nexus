@@ -145,3 +145,7 @@ Heart Disease Prediction Web Application
 ```
 
 2. Open your web browser and go to http://127.0.0.1:5000.
+
+
+https://github.com/user-attachments/assets/67a26819-f9a9-4d84-8645-c9d47c402f02
+
