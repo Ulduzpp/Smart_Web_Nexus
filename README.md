@@ -1,9 +1,7 @@
 # Heart Disease Prediction Web Application
 
 ## Overview
-The Heart Disease Prediction Web Application is designed to help users assess their likelihood of heart disease based on user-inputted health data.
-It leverages machine learning models to deliver accurate predictions and insights, allowing users to make informed health decisions.The app utilizes Flask for the backend, along with Bootstrap, HTML, and CSS for the frontend to create a responsive and user-friendly interface.
-
+The Heart Disease Prediction Web Application is designed to help users assess their likelihood of heart disease based on user-inputted health data.It leverages machine learning models to deliver accurate predictions and insights, allowing users to make informed health decisions.The app utilizes Flask for the backend, along with Bootstrap, HTML, and CSS for the frontend to create a responsive and user-friendly interface.
 
 ## Features
 
@@ -29,7 +27,6 @@ It leverages machine learning models to deliver accurate predictions and insight
 ### 6. Real-Time Predictions:
 - Fast and efficient model predictions processed in real-time, providing users with immediate results.
 
-
 ## Objective
 
 The goal of this project is to collaboratively develop a smart web application that:
@@ -37,71 +34,66 @@ The goal of this project is to collaboratively develop a smart web application t
 - Implements user registration and authentication systems using a database.
 - Containerizes the application with Docker and deploys it using Docker Swarm on a cloud-based host.
 
-
 ## Team Structure
 
 The Nexus team consists of 5 members, each assigned specific tasks to contribute:
 
-- Part 1: Frontend Development (Team Member 1: FatemehHabibimoghaddam)
-- Role: **Frontend Developer**
-- Part 2: Backend Development and Authentication (Team Member 2: Ouldouz Pakpour)
-- Role: **Backend Developer**
-- Part 3: Database Integration (Team Member 3: Sahar_Abdi)
-- Role: **Database Engineer**
-- Part 4: Machine Learning Model (Team Member 4: Hanie Fazli)
-- Role: **Machine Learning Engineer**
-- Part 5: Containerization and Deployment (Team Members 4 & 5: Hanie Fazli & Touba Derakhshandeh)
-- Role: **MLOps Engineer Engineer**
-
+- FatemehHabibimoghaddam: **Frontend Developer**
+- Ouldouz Pakpour: **Backend Developer**
+- Sahar Abdi: **Database Engineer**
+- Hanie Fazli: **Machine Learning Engineer**
+- Hanie Fazli & Touba Derakhshandeh: **MLOps Engineers**
 
 ## Project Structure
+
 Heart Disease Prediction Web Application
-- │   ├── assets
-- │   │   ├── dataset
-- │   │   ├── images
-- │   │   ├── heart_disease_diagnosis_model.ipynb
-- │   │   ├── heart_disease_diagnosis_model.py
-- │   ├── instance 
-- │   │   ├── Heart_Disease_Diagnosis.db
-- │   ├── static 
-- │   │   ├── css
-- │   │   │  └── style.css
-- │   │   ├── images
-- │   │   │  ├── Error_401.webp
-- │   │   │  ├── Error_403.webp
-- │   │   │  ├── Error_404.webp
-- │   │   │  ├── Error_500.webp
-- │   │   │  ├── Heart_Disease.webp
-- │   │   │  ├── No_Disease.webp
-- │   │   │  ├── Logo.webp
-- │   │   │  ├── smart_app.webp
-- │   ├── templates/
-- │   │   ├── base_error.html
-- │   │   ├── base.html
-- │   │   ├── error_401.html
-- │   │   ├── error_403.html
-- │   │   ├── error_404.html
-- │   │   ├── error_500.html
-- │   │   ├── history.html
-- │   │   ├── home.html
-- │   │   ├── input.html
-- │   │   ├── login.html
-- │   │   ├── profile.html
-- │   │   ├── register.html
-- │   │   └── result.html
-- │   ├── .gitignore
-- │   ├── app.py
-- │   ├── form.py
-- │   ├── heart_disease_diagnosis_model.pkl
-- │   ├── members.txt
-- │   ├── model.py 
-- │   ├── README.md
-- │   ├── requirements.txt
-- │   ├── Dockerfile
+```bash
+│   ├── assets
+│   │   ├── dataset
+│   │   ├── images
+│   │   ├── heart_disease_diagnosis_model.ipynb
+│   │   ├── heart_disease_diagnosis_model.py
+│   ├── instance 
+│   │   ├── Heart_Disease_Diagnosis.db
+│   ├── static 
+│   │   ├── css
+│   │   │  └── style.css
+│   │   ├── images
+│   │   │  ├── Error_401.webp
+│   │   │  ├── Error_403.webp
+│   │   │  ├── Error_404.webp
+│   │   │  ├── Error_500.webp
+│   │   │  ├── Heart_Disease.webp
+│   │   │  ├── No_Disease.webp
+│   │   │  ├── Logo.webp
+│   │   │  ├── smart_app.webp
+│   ├── templates/
+│   │   ├── base_error.html
+│   │   ├── base.html
+│   │   ├── error_401.html
+│   │   ├── error_403.html
+│   │   ├── error_404.html
+│   │   ├── error_500.html
+│   │   ├── history.html
+│   │   ├── home.html
+│   │   ├── input.html
+│   │   ├── login.html
+│   │   ├── profile.html
+│   │   ├── register.html
+│   │   └── result.html
+│   ├── .gitignore
+│   ├── app.py
+│   ├── form.py
+│   ├── heart_disease_diagnosis_model.pkl
+│   ├── members.txt
+│   ├── model.py 
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── Dockerfile
     └── docker-compose.yml
+```
 
-
-### Requirements
+## Requirements
 - Python 3.x
 - Flask
 - SQLAlchemy
@@ -111,22 +103,45 @@ Heart Disease Prediction Web Application
 - Docker
 - Docker Compose
 
- 
+
 ## Installation
 
-1. Clone the repository:
-git clone https://github.com/Ulduzpp/Smart_Web_Nexus.git
+1. Clone the repository
 
-2. Navigate to the project directory:
-cd heart-disease-prediction-app
+```bash
+  git clone https://github.com/Ulduzpp/Smart_Web_Nexus.git
+```
 
-3. Install the required packages:
-pip install -r requirements.txt
+2. Navigate to the project directory
 
+```bash
+  cd Smart_Web_Nexus
+```
 
-## Usage
+3. Create a virtual environment
 
-1. Run the application:
-python app.py
+```bash
+  python3 -m venv venv
+```
+
+4. Activate the virtual environment
+
+```bash
+  source venv/bin/activate
+```
+
+5. Install the required packages
+
+```bash
+  pip install -r requirements.txt
+```
+
+## Run Locally
+
+1. Run the application
+
+```bash
+  python app.py
+```
 
 2. Open your web browser and go to http://127.0.0.1:5000.
