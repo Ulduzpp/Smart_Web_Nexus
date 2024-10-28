@@ -1,11 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, abort
-from flask_login import LoginManager, login_required, current_user, login_user, logout_user,UserMixin
+from flask_login import LoginManager, login_required, login_user, logout_user,UserMixin
 import secrets
 from form import InputForm  
 from model import predict_disease
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt  
 from datetime import datetime
+from flask import send_file
+import pandas as pd
+from io import BytesIO
 
 
 app = Flask(__name__)
@@ -184,7 +187,20 @@ def login():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')
+    # Count total predictions made by the user
+    total_predictions = PredictionHistory.query.filter_by(user_id=session['user_id']).count()
+
+    # Count predictions labeled as "Heart Disease" and "No Disease"
+    heart_disease_count = PredictionHistory.query.filter_by(user_id=session['user_id'], result='Heart Disease').count()
+    no_disease_count = PredictionHistory.query.filter_by(user_id=session['user_id'], result='No Disease').count()
+
+    # Pass all counts to the template
+    return render_template(
+        'profile.html', 
+        total_predictions=total_predictions,
+        heart_disease_count=heart_disease_count,
+        no_disease_count=no_disease_count
+    )
 
 @app.route('/logout')
 def logout():
@@ -245,6 +261,42 @@ def history():
     predictions = PredictionHistory.query.filter_by(user_id=session['user_id']).order_by(PredictionHistory.timestamp.desc()).all()
     # Pass the predictions to the history template
     return render_template('history.html', predictions=predictions, username= session['username'])
+
+#Route to download the prediction history report for a specific user.
+@app.route('/download_report')
+@login_required
+def download_report():
+    # Fetch the user's prediction history from the database
+    predictions = PredictionHistory.query.filter_by(user_id=session['user_id']).all()
+    
+    # Convert the prediction data to a DataFrame
+    data = {
+        'Date': [pred.timestamp.strftime('%Y-%m-%d %H:%M:%S') for pred in predictions],  # Format the date
+        'Age': [pred.age for pred in predictions],
+        'Sex': [pred.sex for pred in predictions],
+        'Chest Pain': [pred.chest_pain for pred in predictions],
+        'Resting BP': [pred.resting_blood_pressure for pred in predictions],
+        'Cholesterol': [pred.cholesterol for pred in predictions],
+        'Fasting Blood Sugar': [pred.fasting_blood_sugar for pred in predictions],
+        'Resting ECG': [pred.resting_ecg for pred in predictions],
+        'Max Heart Rate': [pred.max_heart_rate for pred in predictions],
+        'Exercise Angina': [pred.excercise_angina for pred in predictions],
+        'Old Peak': [pred.old_peak for pred in predictions],
+        'ST Slope': [pred.st_slope for pred in predictions],
+        'Major Vessels': [pred.n_major_vessels for pred in predictions],
+        'Thalium': [pred.thalium for pred in predictions],
+        'Prediction': [pred.result for pred in predictions],
+    }
+    
+    df = pd.DataFrame(data)
+    
+    # Create a CSV in memory
+    output = BytesIO()
+    df.to_csv(output, index=False)
+    output.seek(0)
+    
+    # Send the CSV file as a response
+    return send_file(output, mimetype='text/csv', as_attachment=True, download_name='prediction_history.csv')
 
 @app.errorhandler(401)
 def invalid_credentials(error):

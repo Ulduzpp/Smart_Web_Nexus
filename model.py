@@ -3,7 +3,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load the saved model
-with open('heart_diagnosis_disease_model.pkl', 'rb') as f:
+with open('heart_disease_diagnosis_model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)
 
 def preprocess(features):

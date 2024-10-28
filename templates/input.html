@@ -18,13 +18,13 @@
 
   <!-- Flash message display for any form errors -->
   {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="alert alert-danger">
-        {% for category, message in messages %}
-          {{ message }}
-        {% endfor %}
-      </div>
-    {% endif %}
+  {% if messages %}
+  <div class="alert alert-danger">
+    {% for category, message in messages %}
+    {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
   {% endwith %}
 
   <div class="card p-4" style="background-color: #ADDFFF; max-width: 1200px; margin: 0 auto 50px;">
@@ -36,51 +36,40 @@
         <!-- Column 1 -->
         <div class="col-md-6">
           {{ form.age.label(class="form-label") }}
-          {{ form.age(class="form-control", id="age") }}
+          {{ form.age(class="form-control", id="age", placeholder="(1-100)") }}
           {% if form.age.errors %}
-            <div class="text-danger">
-              {{ form.age.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.age.errors[0] }}</div>
           {% endif %}
 
           {{ form.sex.label(class="form-label") }}
           {{ form.sex(class="form-select", id="sex") }}
           {% if form.sex.errors %}
-            <div class="text-danger">
-              {{ form.sex.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.sex.errors[0] }}</div>
           {% endif %}
 
           {{ form.chest_pain.label(class="form-label") }}
           {{ form.chest_pain(class="form-select", id="chest_pain") }}
           {% if form.chest_pain.errors %}
-            <div class="text-danger">
-              {{ form.chest_pain.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.chest_pain.errors[0] }}</div>
           {% endif %}
 
           {{ form.resting_blood_pressure.label(class="form-label") }}
-          {{ form.resting_blood_pressure(class="form-control", id="resting_blood_pressure") }}
+          {{ form.resting_blood_pressure(class="form-control", id="resting_blood_pressure", placeholder="0-200 mm Hg")
+          }}
           {% if form.resting_blood_pressure.errors %}
-            <div class="text-danger">
-              {{ form.resting_blood_pressure.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.resting_blood_pressure.errors[0] }}</div>
           {% endif %}
 
           {{ form.cholesterol.label(class="form-label") }}
-          {{ form.cholesterol(class="form-control", id="cholesterol") }}
+          {{ form.cholesterol(class="form-control", id="cholesterol", placeholder="0-603 mg/dL") }}
           {% if form.cholesterol.errors %}
-            <div class="text-danger">
-              {{ form.cholesterol.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.cholesterol.errors[0] }}</div>
           {% endif %}
 
           {{ form.fasting_blood_sugar.label(class="form-label") }}
           {{ form.fasting_blood_sugar(class="form-select", id="fasting_blood_sugar") }}
           {% if form.fasting_blood_sugar.errors %}
-            <div class="text-danger">
-              {{ form.fasting_blood_sugar.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.fasting_blood_sugar.errors[0] }}</div>
           {% endif %}
         </div>
 
@@ -89,49 +78,37 @@
           {{ form.resting_ecg.label(class="form-label") }}
           {{ form.resting_ecg(class="form-select", id="resting_ecg") }}
           {% if form.resting_ecg.errors %}
-            <div class="text-danger">
-              {{ form.resting_ecg.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.resting_ecg.errors[0] }}</div>
           {% endif %}
 
           {{ form.max_heart_rate.label(class="form-label") }}
-          {{ form.max_heart_rate(class="form-control", id="max_heart_rate") }}
+          {{ form.max_heart_rate(class="form-control", id="max_heart_rate", placeholder="60-202 bpm") }}
           {% if form.max_heart_rate.errors %}
-            <div class="text-danger">
-              {{ form.max_heart_rate.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.max_heart_rate.errors[0] }}</div>
           {% endif %}
 
           {{ form.excercise_angina.label(class="form-label") }}
           {{ form.excercise_angina(class="form-select", id="excercise_angina") }}
           {% if form.excercise_angina.errors %}
-            <div class="text-danger">
-              {{ form.excercise_angina.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.excercise_angina.errors[0] }}</div>
           {% endif %}
 
           {{ form.old_peak.label(class="form-label") }}
-          {{ form.old_peak(class="form-control", id="old_peak") }}
+          {{ form.old_peak(class="form-control", id="old_peak", placeholder="-2.6 to 6.2") }}
           {% if form.old_peak.errors %}
-            <div class="text-danger">
-              {{ form.old_peak.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.old_peak.errors[0] }}</div>
           {% endif %}
 
           {{ form.st_slope.label(class="form-label") }}
           {{ form.st_slope(class="form-select", id="st_slope") }}
           {% if form.st_slope.errors %}
-            <div class="text-danger">
-              {{ form.st_slope.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.st_slope.errors[0] }}</div>
           {% endif %}
 
           {{ form.n_major_vessels.label(class="form-label") }}
-          {{ form.n_major_vessels(class="form-control", id="n_major_vessels") }}
+          {{ form.n_major_vessels(class="form-control", id="n_major_vessels", placeholder="0-4") }}
           {% if form.n_major_vessels.errors %}
-            <div class="text-danger">
-              {{ form.n_major_vessels.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.n_major_vessels.errors[0] }}</div>
           {% endif %}
         </div>
       </div>
@@ -142,15 +119,13 @@
           {{ form.thalium.label(class="form-label") }}
           {{ form.thalium(class="form-select", id="thalium") }}
           {% if form.thalium.errors %}
-            <div class="text-danger">
-              {{ form.thalium.errors[0] }}
-            </div>
+          <div class="text-danger">{{ form.thalium.errors[0] }}</div>
           {% endif %}
         </div>
       </div>
 
       <div class="text-center">
-        <div class="d-grid gap-2 col-6 mx-auto">
+        <div class="d-grid gap-2 mt-2 col-6 mx-auto">
           {{ form.submit(class="btn btn-outline-danger") }}
         </div>
       </div>
