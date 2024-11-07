@@ -1,0 +1,13 @@
+version: '1.0'
+
+services:
+    web:
+      image: smart_web_nexus
+      build: .
+      ports:
+          - "5000:5000"
+      
+      deploy:
+        replicas: 3
+        restart_policy:
+          condition: on-failure
