@@ -318,4 +318,4 @@ if __name__ == '__main__':
     #Design and set up a SQLite (or other) database to store user data 
     with app.app_context():
           db.create_all()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
