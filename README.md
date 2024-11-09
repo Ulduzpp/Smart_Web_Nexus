@@ -1,4 +1,4 @@
-Sahar-Abdi
+
 Database Schema and Model Details
 
 We have used Flask, SQLAlchemy, and Bcrypt to create an SQLite database. This database includes two tables:
@@ -99,18 +99,18 @@ Conclusion:
 
 
 # Smart_Web_Nexus
- main
+
 # Heart Disease Prediction Web Application
 
 ## Overview
 The Heart Disease Prediction Web Application is designed to help users assess their likelihood of heart disease based on user-inputted health data.It leverages machine learning models to deliver accurate predictions and insights, allowing users to make informed health decisions.The app utilizes Flask for the backend, along with Bootstrap, HTML, and CSS for the frontend to create a responsive and user-friendly interface.
 
-Sahar-Abdi
+
 
 ## Access the App
 Open http://http://188.121.99.111:5000 in your browser to access the app.
 
- main
+ 
 ## Features
 
 ### 1. User Registration and Login Functionality:
@@ -261,7 +261,7 @@ Classification Report: Showed precision, recall, F1-score for both classes (Hear
 
 The trained model was saved using the pickle module for future predictions
 
- Sahar-Abdi
+
 
 ## Docker
 ### 1. Clone the repository
@@ -272,7 +272,7 @@ The trained model was saved using the pickle module for future predictions
 ### 3. Run the docker container
 - docker run -p 5000:5000 smart_web_nexus
 
- main
+ 
 ## Objective
 
 The goal of this project is to collaboratively develop a smart web application that:
