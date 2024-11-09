@@ -31,12 +31,12 @@ Open http://http://188.121.99.111:5000 in your browser to access the app.
 - Fast and efficient model predictions processed in real-time, providing users with immediate results.
 
 ## Docker
-### 1.Clone the repository
+### 1. Clone the repository
 - https://github.com/Ulduzpp/Smart_Web_Nexus.git
 - cd Smart_Web_Nexus
-### 2.Build the docker image
+### 2. Build the docker image
 - docker build -t smart_web_nexus
-### 3.Run the docker container
+### 3. Run the docker container
 - docker run -p 5000:5000 smart_web_nexus
 
 ## Objective
