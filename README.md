@@ -3,6 +3,9 @@
 ## Overview
 The Heart Disease Prediction Web Application is designed to help users assess their likelihood of heart disease based on user-inputted health data.It leverages machine learning models to deliver accurate predictions and insights, allowing users to make informed health decisions.The app utilizes Flask for the backend, along with Bootstrap, HTML, and CSS for the frontend to create a responsive and user-friendly interface.
 
+## Access the App
+Open http://http://188.121.99.111:5000 in your browser to access the app.
+
 ## Features
 
 ### 1. User Registration and Login Functionality:
