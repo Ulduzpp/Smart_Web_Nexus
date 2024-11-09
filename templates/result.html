@@ -1,67 +1,49 @@
 {% extends "base.html" %}
+
 {% block title %}Predicted Result{% endblock %}
+
+{% block navbar %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link" href="/profile">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/logout">Logout</a>
+  </li>
+</ul>
+{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2 class="text-center mb-4">Predicted Result</h2>
+  <h2 class="text-center mb-2">Prediction Result</h2>
 
-    <div class="card p-4" style="background-color: #f8d7da; max-width: 600px; margin: 0 auto;">
-        <h5 class="mb-3">Your Input Data:</h5>
-        <ul class="list-group mb-4">
-            <li class="list-group-item"><strong>Age:</strong> {{ input_data['age'] }}</li>
-            <li class="list-group-item"><strong>Sex:</strong> {{ 'Male' if input_data['sex'] == 1 else 'Female' }}</li>
-            <li class="list-group-item"><strong>Chest Pain Type:</strong>
-                {% if input_data['chest_pain'] == 0 %} Typical angina
-                {% elif input_data['chest_pain'] == 1 %} Atypical angina
-                {% elif input_data['chest_pain'] == 2 %} Non-anginal pain
-                {% else %} Asymptomatic
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Resting Blood Pressure:</strong> {{ input_data['trestbps'] }} mm Hg</li>
-            <li class="list-group-item"><strong>Cholesterol:</strong> {{ input_data['chol'] }} mg/dL</li>
-            <li class="list-group-item"><strong>Fasting Blood Sugar:</strong> {{ 'Yes' if input_data['fbs'] == 1 else 'No' }}</li>
-            <li class="list-group-item"><strong>Resting ECG:</strong>
-                {% if input_data['restecg'] == 0 %} Normal
-                {% elif input_data['restecg'] == 1 %} Abnormality
-                {% else %} Hypertrophy
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Maximum Heart Rate Achieved:</strong> {{ input_data['thalach'] }} bpm</li>
-            <li class="list-group-item"><strong>Exercise-Induced Angina:</strong> {{ 'Yes' if input_data['exang'] == 1 else 'No' }}</li>
-            <li class="list-group-item"><strong>ST Depression:</strong> {{ input_data['oldpeak'] }}</li>
-            <li class="list-group-item"><strong>Slope of the ST Segment:</strong>
-                {% if input_data['slope'] == 0 %} Upsloping
-                {% elif input_data['slope'] == 1 %} Flat
-                {% else %} Downsloping
-                {% endif %}
-            </li>
-            <li class="list-group-item"><strong>Number of Major Vessels:</strong> {{ input_data['ca'] }}</li>
-            <li class="list-group-item"><strong>Thalassemia:</strong>
-                {% if input_data['thal'] == 0 %} Normal
-                {% elif input_data['thal'] == 1 %} Fixed defect
-                {% elif input_data['thal'] == 2 %} Reversible defect
-                {% else %} Not described
-                {% endif %}
-            </li>
-        </ul>
+  <div class="card p-4" style="background-color: #ADDFFF; max-width: 700px; margin: 0 auto; margin-bottom: 40px;">
 
-        <h5 class="mb-3">Prediction:</h5>
-        <p class="lead" style="color: {% if result == 'Positive' %}red{% else %}green{% endif %};"><strong>{{ result }}</strong></p>
-
-        {% if result == 'Positive' %}
-        <div class="alert alert-danger">
-            <strong>Explanation:</strong> A positive result indicates a higher risk of heart disease. It is recommended
-            that you consult with a healthcare provider for further testing and management.
-        </div>
-        {% else %}
-        <div class="alert alert-success">
-            <strong>Explanation:</strong> A negative result suggests that your risk of heart disease is lower, but regular checkups are still important for maintaining heart health.
-        </div>
-        {% endif %}
-
-        <div class="text-center">
-            <a href="/input" class="btn btn-secondary">Try Again</a>
-        </div>
+    <p class="lead text-center" style="color: {% if result == 'Heart Disease' %} red {% else %} green {% endif %};">
+      <strong>{{ result }}</strong>
+    </p>
+    <!-- Conditional Image Rendering -->
+    {% if result == 'Heart Disease' %}
+    <img src="{{ url_for('static', filename='images/Heart_Disease.webp') }}" alt="Heart Disease"
+      class="img-fluid d-block mx-auto mb-3" style="width: 70%; max-width: 400px; height: auto;">
+    <div class="alert alert-danger">
+      <strong>Explanation:</strong> The prediction result indicates a higher risk of heart disease.<br>
+      We recommend scheduling an appointment with your family doctor to discuss these results and determine the next
+      steps for your health.
     </div>
+    {% else %}
+    <img src="{{ url_for('static', filename='images/No_Disease.webp') }}" alt="No Heart Disease"
+      class="img-fluid d-block mx-auto mb-3" style="width: 70%; max-width: 400px; height: auto;">
+    <div class="alert alert-success">
+      <strong>Explanation:</strong> The prediction result indicates a lower risk of heart disease.<br>
+      However, it’s important to continue maintaining a healthy lifestyle.<br>
+      We recommend regular checkups with your family doctor to monitor your heart health and<br>
+      address any concerns that may arise in the future.
+    </div>
+    {% endif %}
+    <div class="text-center">
+      <a href="/input" class="btn btn-primary">Try Again</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

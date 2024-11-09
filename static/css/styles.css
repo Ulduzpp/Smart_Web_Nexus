@@ -8,36 +8,105 @@ h1, h2 {
 }
 
 .container {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .navbar {
     margin-bottom: 20px;
 }
-
+.navbar {
+      background-color: blue;
+    }
+    .navbar .navbar-brand {
+      position: fixed;
+      top: 0;
+      right: 20px;
+    }
 .form-label {
-    font-size: 1rem; /* Adjust label font size */
-}
+    font-size: 0.9rem; 
+    margin-top: 0.2rem; 
+    margin-bottom: 0.1rem; 
+  }
+
+.text-danger {
+    margin-top: 0.1rem; 
+  }
 
 .form-control, .form-select {
-    font-size: 0.9rem; /* Adjust input and select font size */
+    font-size: 0.9rem; 
 }
 
 button {
-    font-size: 1rem; /* Adjust button font size */
+    font-size: 1rem; 
 }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .col-md-4 {
-        width: 100%; /* Stack columns vertically on smaller screens */
+        width: 100%; 
     }
 
     .card {
-        max-width: 100%; /* Ensure form box adjusts to smaller screens */
+        max-width: 100%; 
     }
 
     .form-label {
-        font-size: 0.85rem; /* Smaller font size on smaller screens */
+        font-size: 0.85rem; 
     }
 }
+
+.list-group-item-mine {
+  background-color: #eaf7ff;
+}
+
+/* History Table */
+  .table{
+    border: 2px solid #007bff; 
+    border-width: 4px !important;
+  }
+  .table th , td {
+    border-width: 2px !important;
+  }
+  .table-bordered td, .table-bordered th {
+    border: 2px solid #007bff; 
+  }
+.table thead th {
+    background-color: #0000FF !important;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    white-space: nowrap; 
+    min-width: 130px;
+}
+.table-hover tbody tr:hover {
+    background-color: #fffeb3  ; 
+  }
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #b8feffed; 
+  }
+
+
+/* Register and Login pages */
+.gradient-form {
+        background-color: #eee;
+    }
+
+.gradient-custom-2 {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+    }
+
+.card {
+        border-radius: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+        .info-section {
+            display: block;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .info-section {
+            display: none !important;
+        }
+      }

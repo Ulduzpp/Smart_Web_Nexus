@@ -4,6 +4,22 @@
 {% block content %}
 <div class="bg">
   <div class="content-center">
+    <div>
+      {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+          <div class="mt-1">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+    </div>
     <h1 class="display-1">500</h1>
     <h2 class="mb-4">Internal Server Error</h2>
     <div class="image-container text-center mb-3">
