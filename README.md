@@ -398,4 +398,5 @@ Heart Disease Prediction Web Application
 
 ## Demo
 
-https://github.com/user-attachments/assets/782fc8a5-a77f-4b1a-8feb-819c627332a9
+https://github.com/user-attachments/assets/a4d073bc-39ef-41a6-bb9f-dfa9a30e7ab2
+
