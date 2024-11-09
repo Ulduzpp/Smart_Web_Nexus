@@ -35,7 +35,7 @@ Open http://http://188.121.99.111:5000 in your browser to access the app.
 - https://github.com/Ulduzpp/Smart_Web_Nexus.git
 - cd Smart_Web_Nexus
 ### 2. Build the docker image
-- docker build -t smart_web_nexus
+- docker build -t smart_web_nexus .
 ### 3. Run the docker container
 - docker run -p 5000:5000 smart_web_nexus
 
