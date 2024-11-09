@@ -33,6 +33,7 @@ The Heart Disease Prediction Web Application is designed to help users assess th
 This project focuses on predicting heart disease using machine learning techniques. The model is trained on a dataset containing various health metrics, aiming to predict the presence of heart disease based on patient information. The notebook involves data preprocessing, exploratory data analysis (EDA), model training, evaluation, and saving the final model for deployment.
 
 2. Data Preparation
+
 2.1 Importing Libraries
    
 The project utilizes several Python libraries, including:
