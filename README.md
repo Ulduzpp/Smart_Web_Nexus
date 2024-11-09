@@ -28,38 +28,56 @@ The Heart Disease Prediction Web Application is designed to help users assess th
 - Fast and efficient model predictions processed in real-time, providing users with immediate results.
 ### 7. Heart Disease Diagnosis Model
 1. Project Overview
+
 This project focuses on predicting heart disease using machine learning techniques. The model is trained on a dataset containing various health metrics, aiming to predict the presence of heart disease based on patient information. The notebook involves data preprocessing, exploratory data analysis (EDA), model training, evaluation, and saving the final model for deployment.
+
 2. Data Preparation
 2.1 Importing Libraries
+   
 The project utilizes several Python libraries, including:
+
 Data Handling & Preprocessing: pandas, numpy, scipy
+
 Data Visualization: matplotlib, seaborn, plotly
+
 Modeling & Evaluation: scikit-learn, pickle
+
 2.2 Loading the Dataset
+
 The dataset used for this project is a heart disease dataset sourced from Kaggle. It contains 303 observations with 14 features including:
-Age: Age of the patient
-Sex: Gender (1 = Male, 0 = Female)
-ChestPain: Type of chest pain (0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic)
-RestingBloodPressure: Resting blood pressure (mm Hg)
-Cholesterol: Serum cholesterol (mg/dl)
-FastingBloodSugar: Fasting blood sugar > 120 mg/dl (1 = True, 0 = False)
-RestingECG: Resting electrocardiographic results
-MaxHeartRate: Maximum heart rate achieved
-ExcerciseAngina: Exercise-induced angina (1 = Yes, 0 = No)
-OldPeak: ST depression induced by exercise relative to rest
-STSlope: The slope of the peak exercise ST segment
-nMajorVessels: Number of major vessels (0-3) colored by fluoroscopy
-Thalium: Thalassemia levels
-Status (Target): Presence of heart disease (1 = Disease, 0 = No Disease)
+
+- Age: Age of the patient
+- Sex: Gender (1 = Male, 0 = Female)
+- ChestPain: Type of chest pain (0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic)
+- RestingBloodPressure: Resting blood pressure (mm Hg)
+- Cholesterol: Serum cholesterol (mg/dl)
+- FastingBloodSugar: Fasting blood sugar > 120 mg/dl (1 = True, 0 = False)
+- RestingECG: Resting electrocardiographic results
+- MaxHeartRate: Maximum heart rate achieved
+- ExcerciseAngina: Exercise-induced angina (1 = Yes, 0 = No)
+- OldPeak: ST depression induced by exercise relative to rest
+- STSlope: The slope of the peak exercise ST segment
+- nMajorVessels: Number of major vessels (0-3) colored by fluoroscopy
+- Thalium: Thalassemia levels
+- Status (Target): Presence of heart disease (1 = Disease, 0 = No Disease)
+
 3. Data Preprocessing
 3.1 Renaming Variables
+   
 The columns were renamed for better readability and interpretation. For example:
+
 cp → ChestPain
+
 trestbps → RestingBloodPressure
+
 target → Status
+
 3.2 Categorical Mapping
+
 Categorical variables were transformed into more descriptive labels for better analysis:
+
 Sex: Mapped to "Male" or "Female"
+
 ChestPain: Mapped to descriptive labels (e.g., "Typical angina", "Atypical angina")
 FastingBloodSugar: Converted to boolean
 RestingECG, ExcerciseAngina, STSlope, and Thalium: Mapped to categorical labels.
@@ -68,7 +86,7 @@ The dataset was checked for:
 Shape: (303 rows, 14 columns)
 Data Types: Mix of integers, floats, and categorical variables
 Missing Values: No missing values detected
-4. Exploratory Data Analysis (EDA)
+7. Exploratory Data Analysis (EDA)
 4.1 Statistical Summary
 The dataset was summarized to identify trends:
 Numerical Features: Age, RestingBloodPressure, Cholesterol, MaxHeartRate, OldPeak, nMajorVessels
@@ -81,7 +99,7 @@ Most patients did not experience exercise-induced angina
 Histogram and box plots were generated for continuous variables to observe distributions and detect outliers. For example:
 The Age feature showed a slightly right-skewed distribution.
 The Cholesterol feature contained some outliers based on the IQR method.
-5. Model Building & Evaluation
+8. Model Building & Evaluation
 5.1 Data Splitting
 The dataset was split into training and test sets using an 80-20 split.
 5.2 Model Structure and Training
