@@ -30,6 +30,15 @@ Open http://http://188.121.99.111:5000 in your browser to access the app.
 ### 6. Real-Time Predictions:
 - Fast and efficient model predictions processed in real-time, providing users with immediate results.
 
+## Docker
+### 1.Clone the repository
+- https://github.com/Ulduzpp/Smart_Web_Nexus.git
+- cd Smart_Web_Nexus
+### 2.Build the docker image
+- docker build -t smart_web_nexus
+### 3.Run the docker container
+- docker run -p 5000:5000 smart_web_nexus
+
 ## Objective
 
 The goal of this project is to collaboratively develop a smart web application that:
@@ -45,6 +54,7 @@ The Nexus team consists of 5 members, each assigned specific tasks to contribute
 - Ouldouz Pakpour: **Backend Developer**
 - Sahar Abdi: **Database Engineer**
 - Hanie Fazli: **Machine Learning Engineer**
+- Touba Derakhshandeh: **Dockerization**
 - Hanie Fazli & Touba Derakhshandeh: **MLOps Engineers**
 
 ## Project Structure
