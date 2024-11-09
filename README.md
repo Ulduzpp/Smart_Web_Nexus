@@ -27,6 +27,7 @@ The Heart Disease Prediction Web Application is designed to help users assess th
 ### 6. Real-Time Predictions:
 - Fast and efficient model predictions processed in real-time, providing users with immediate results.
 ### 7. Heart Disease Diagnosis Model
+
 1. Project Overview
 
 This project focuses on predicting heart disease using machine learning techniques. The model is trained on a dataset containing various health metrics, aiming to predict the presence of heart disease based on patient information. The notebook involves data preprocessing, exploratory data analysis (EDA), model training, evaluation, and saving the final model for deployment.
@@ -62,6 +63,7 @@ The dataset used for this project is a heart disease dataset sourced from Kaggle
 - Status (Target): Presence of heart disease (1 = Disease, 0 = No Disease)
 
 3. Data Preprocessing
+
 3.1 Renaming Variables
    
 The columns were renamed for better readability and interpretation. For example:
@@ -79,41 +81,77 @@ Categorical variables were transformed into more descriptive labels for better a
 Sex: Mapped to "Male" or "Female"
 
 ChestPain: Mapped to descriptive labels (e.g., "Typical angina", "Atypical angina")
+
 FastingBloodSugar: Converted to boolean
+
 RestingECG, ExcerciseAngina, STSlope, and Thalium: Mapped to categorical labels.
+
 3.3 Data Overview
+
 The dataset was checked for:
+
 Shape: (303 rows, 14 columns)
+
 Data Types: Mix of integers, floats, and categorical variables
+
 Missing Values: No missing values detected
-7. Exploratory Data Analysis (EDA)
+
+4. Exploratory Data Analysis (EDA)
+
 4.1 Statistical Summary
+
 The dataset was summarized to identify trends:
+
 Numerical Features: Age, RestingBloodPressure, Cholesterol, MaxHeartRate, OldPeak, nMajorVessels
+
 Average Age: ~54 years
+
 Average Cholesterol: ~246 mg/dl
+
 Categorical Features: ChestPain, RestingECG, STSlope, etc.
+
 Majority had "Typical angina" chest pain
+
 Most patients did not experience exercise-induced angina
+
 4.2 Univariate Analysis
+
 Histogram and box plots were generated for continuous variables to observe distributions and detect outliers. For example:
+
 The Age feature showed a slightly right-skewed distribution.
+
 The Cholesterol feature contained some outliers based on the IQR method.
-8. Model Building & Evaluation
+
+5. Model Building & Evaluation
+
 5.1 Data Splitting
+
 The dataset was split into training and test sets using an 80-20 split.
+
 5.2 Model Structure and Training
+
 The model used for heart disease prediction is a K-Nearest Neighbors (KNN) classifier. KNN is a simple, yet powerful algorithm that classifies data points based on their proximity to the nearest neighbors in the feature space.
+
 The model's structure includes:
+
 - Data Preprocessing: Feature scaling using StandardScaler to ensure that features are on the same scale.
+
 - Model Selection: The KNN classifier was chosen for its simplicity and effectiveness in classification tasks.
+
 - Hyperparameter Tuning: GridSearchCV was used to optimize the number of neighbors.
+
 Model Evaluation:
+
 Accuracy: Achieved a classification accuracy of approximately 85%.
+
 Confusion Matrix: Displayed true positives, false positives, true negatives, and false negatives.
+
 Classification Report: Showed precision, recall, F1-score for both classes (Heart Disease vs. No Disease).
+
 5.3 Model Saving
+
 The trained model was saved using the pickle module for future predictions
+
 ## Objective
 
 The goal of this project is to collaboratively develop a smart web application that:
