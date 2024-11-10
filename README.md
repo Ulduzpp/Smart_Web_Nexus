@@ -33,57 +33,61 @@ Access the live version: [http://188.121.99.111:5000](http://188.121.99.111:5000
 
 ---
 
-## Database Schema and Models
+## Objective
+The project's goal is to collaboratively develop a web application that:
+- Utilizes machine learning for heart disease prediction.
+- Implements user registration and authentication systems using a database.
+- Containerizes the application with Docker and deploys it using Docker Swarm on a cloud-based host for scalability.
 
-### Tables
-1. **Users Table**
-   - Stores user information and authentication details.
-   - Fields:
-     - `id`: Unique identifier (Primary Key)
-     - `username`: Unique username
-     - `email`: Unique email address
-     - `password_hash`: Hashed password
-   - **Relationship**: One-to-many relationship with `prediction_history`.
+---
 
-2. **PredictionHistory Table**
-   - Stores predictions made by each user.
-   - Fields:
-     - `id`: Unique identifier (Primary Key)
-     - `user_id`: Foreign key referencing the `users` table
-     - `age`, `sex`, `chest_pain`, `resting_blood_pressure`, `cholesterol`, etc.: User inputs for predictions
-     - `result`: Prediction outcome ("Positive" or "Negative")
-     - `timestamp`: Time when the prediction was made
-
-### Model Classes
-```python
-# User Model
-class User(UserMixin, db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
-    predictions = db.relationship('PredictionHistory', backref='user', lazy=True)
-
-    def set_password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
-
-# PredictionHistory Model
-class PredictionHistory(db.Model):
-    __tablename__ = 'prediction_history'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    sex = db.Column(db.String, nullable=False)
-    chest_pain = db.Column(db.String, nullable=False)
-    # Other fields here...
-    result = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+## Project Structure
 ```
-
+Heart Disease Prediction Web Application
+│   ├── assets
+│   │   ├── dataset
+│   │   ├── images
+│   │   ├── heart_disease_diagnosis_model.ipynb
+│   │   ├── heart_disease_diagnosis_model.py
+│   ├── instance 
+│   │   ├── Heart_Disease_Diagnosis.db
+│   ├── static 
+│   │   ├── css
+│   │   │  └── style.css
+│   │   ├── images
+│   │   │  ├── Error_401.webp
+│   │   │  ├── Error_403.webp
+│   │   │  ├── Error_404.webp
+│   │   │  ├── Error_500.webp
+│   │   │  ├── Heart_Disease.webp
+│   │   │  ├── No_Disease.webp
+│   │   │  ├── Logo.webp
+│   │   │  ├── smart_app.webp
+│   ├── templates/
+│   │   ├── base_error.html
+│   │   ├── base.html
+│   │   ├── error_401.html
+│   │   ├── error_403.html
+│   │   ├── error_404.html
+│   │   ├── error_500.html
+│   │   ├── history.html
+│   │   ├── home.html
+│   │   ├── input.html
+│   │   ├── login.html
+│   │   ├── profile.html
+│   │   ├── register.html
+│   │   └── result.html
+│   ├── .gitignore
+│   ├── app.py
+│   ├── form.py
+│   ├── heart_disease_diagnosis_model.pkl
+│   ├── members.txt
+│   ├── model.py 
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── Dockerfile
+    └── docker-compose.yml
+```
 ---
 
 ## Dataset and Model
@@ -139,55 +143,55 @@ We trained a **K-Nearest Neighbors (KNN)** classifier using scikit-learn. This s
 
 ---
 
+## Database Schema and Models
 
----
+### Tables
+1. **Users Table**
+   - Stores user information and authentication details.
+   - Fields:
+     - `id`: Unique identifier (Primary Key)
+     - `username`: Unique username
+     - `email`: Unique email address
+     - `password_hash`: Hashed password
+   - **Relationship**: One-to-many relationship with `prediction_history`.
 
-## Project Structure
-```
-Heart Disease Prediction Web Application
-│   ├── assets
-│   │   ├── dataset
-│   │   ├── images
-│   │   ├── heart_disease_diagnosis_model.ipynb
-│   │   ├── heart_disease_diagnosis_model.py
-│   ├── instance 
-│   │   ├── Heart_Disease_Diagnosis.db
-│   ├── static 
-│   │   ├── css
-│   │   │  └── style.css
-│   │   ├── images
-│   │   │  ├── Error_401.webp
-│   │   │  ├── Error_403.webp
-│   │   │  ├── Error_404.webp
-│   │   │  ├── Error_500.webp
-│   │   │  ├── Heart_Disease.webp
-│   │   │  ├── No_Disease.webp
-│   │   │  ├── Logo.webp
-│   │   │  ├── smart_app.webp
-│   ├── templates/
-│   │   ├── base_error.html
-│   │   ├── base.html
-│   │   ├── error_401.html
-│   │   ├── error_403.html
-│   │   ├── error_404.html
-│   │   ├── error_500.html
-│   │   ├── history.html
-│   │   ├── home.html
-│   │   ├── input.html
-│   │   ├── login.html
-│   │   ├── profile.html
-│   │   ├── register.html
-│   │   └── result.html
-│   ├── .gitignore
-│   ├── app.py
-│   ├── form.py
-│   ├── heart_disease_diagnosis_model.pkl
-│   ├── members.txt
-│   ├── model.py 
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── Dockerfile
-    └── docker-compose.yml
+2. **PredictionHistory Table**
+   - Stores predictions made by each user.
+   - Fields:
+     - `id`: Unique identifier (Primary Key)
+     - `user_id`: Foreign key referencing the `users` table
+     - `age`, `sex`, `chest_pain`, `resting_blood_pressure`, `cholesterol`, etc.: User inputs for predictions
+     - `result`: Prediction outcome ("Positive" or "Negative")
+     - `timestamp`: Time when the prediction was made
+
+### Model Classes
+```python
+# User Model
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+    predictions = db.relationship('PredictionHistory', backref='user', lazy=True)
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+
+# PredictionHistory Model
+class PredictionHistory(db.Model):
+    __tablename__ = 'prediction_history'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    sex = db.Column(db.String, nullable=False)
+    chest_pain = db.Column(db.String, nullable=False)
+    # Other fields here...
+    result = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 ```
 
 ---
@@ -262,13 +266,7 @@ python app.py
 
 ---
 
-## Objective
-The project's goal is to collaboratively develop a web application that:
-- Utilizes machine learning for heart disease prediction.
-- Implements user registration and authentication systems using a database.
-- Containerizes the application with Docker and deploys it using Docker Swarm on a cloud-based host for scalability.
 
----
 
 ## Contributing
 We welcome contributions to improve this project! Please fork the repository and submit a pull request.
