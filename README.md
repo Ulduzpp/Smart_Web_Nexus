@@ -1,14 +1,14 @@
-# Heart Disease Prediction Web Application
+# ❤️ Heart Disease Prediction Web Application ❤️
 
-### Overview
+### 📖 Overview
 The **Heart Disease Prediction Web Application** helps users predict their risk of heart disease using machine learning models. The app is built using **Flask**, **SQLAlchemy**, **Bcrypt**, and is deployed with **Docker**. It offers a user-friendly interface for inputting health data, viewing prediction results, and managing profiles.
 
-## Access the App
-Access the live version: [http://188.121.99.111:5000](http://188.121.99.111:5000)
+## 🚀 Access the App
+ Access the live version: [http://188.121.99.111:5000](http://188.121.99.111:5000)
 
 ---
 
-## Features
+## ✅ Features
 1. **User Registration and Authentication**
    - Secure registration and login functionality.
    - Password hashing for added security using Bcrypt.
@@ -33,7 +33,7 @@ Access the live version: [http://188.121.99.111:5000](http://188.121.99.111:5000
 
 ---
 
-## Objective
+## 🎯 Objective
 The project's goal is to collaboratively develop a web application that:
 - Utilizes machine learning for heart disease prediction.
 - Implements user registration and authentication systems using a database.
@@ -41,7 +41,7 @@ The project's goal is to collaboratively develop a web application that:
 
 ---
 
-## Project Structure
+## ✅ Project Structure
 ```
 Heart Disease Prediction Web Application
 │   ├── assets
@@ -143,7 +143,7 @@ We trained a **K-Nearest Neighbors (KNN)** classifier using scikit-learn. This s
 
 ---
 
-## Database Schema and Models
+## 🛢️ Database Schema and Models
 
 ### Tables
 1. **Users Table**
@@ -216,24 +216,24 @@ class PredictionHistory(db.Model):
 - **Python 3.x**
 - **Docker** and **Docker Compose**
 
-### Step 1: Clone the Repository
+### 👉 Step 1: Clone the Repository
 ```bash
 git clone https://github.com/Ulduzpp/Smart_Web_Nexus.git
 cd Smart_Web_Nexus
 ```
 
-### Step 2: Setup Virtual Environment
+### 👉 Step 2: Setup Virtual Environment
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Step 3: Install Dependencies
+### 👉 Step 3: Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4: Run the Application(locally)
+### 👉 Step 4: Run the Application(locally)
 ```bash
 python app.py
 ```
@@ -241,7 +241,7 @@ python app.py
 
 ---
 
-## Docker Deployment
+## 🐳 Docker Deployment
 
 ### Build and Run Docker Container
 1. **Build the Docker Image**
