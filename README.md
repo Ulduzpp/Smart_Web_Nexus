@@ -89,7 +89,7 @@ class PredictionHistory(db.Model):
 ## Dataset and Model
 
 ### Dataset Details
-The **dataset** used for training the model is sourced from [Kaggle's Heart Disease Dataset](https://www.kaggle.com/). It includes **303 observations** with **14 features**, such as:
+The **dataset** used for training the model is sourced from [Kaggle's Heart Disease Dataset](https://www.kaggle.com/datasets/yasserh/heart-disease-dataset). It includes **303 observations** with **14 features**, such as:
 
 - **Age**: Patient's age
 - **Sex**: Gender (1 = Male, 0 = Female)
